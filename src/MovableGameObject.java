@@ -20,23 +20,23 @@ public class MovableGameObject extends GameObject {
         px += vx;
         py += vy;
 
-        // 画面上
+        // 画面左
         if (px < 0) {
             px = 0;
         }
 
-        // 画面下
+        // 画面右
         if (px > MainPanel.WIDTH - size) {
             px = MainPanel.WIDTH - size;
             vy = 0;
         }
 
-        // 画面左
+        // 画面上
         if (py < 0) {
             py = 0;
         }
 
-        // 画面右
+        // 画面下
         if (py > MainPanel.HEIGHT - size) {
             py = MainPanel.HEIGHT - size;
             vy = 0;
