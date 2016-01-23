@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Mario extends GameObject {
-    private static final int SPEED = 3;
+    private static final int SPEED = 10;
     private int vx, vy;
 
     private AudioClip jumpSound;
@@ -31,6 +31,23 @@ public class Mario extends GameObject {
     public void move() {
         px += vx;
         py += vy;
+
+        if (px < 0) {
+            px = 0;
+        }
+
+        if (px > MainPanel.WIDTH - size) {
+            px = MainPanel.WIDTH - size;
+        }
+
+        if (py < 0) {
+            py = 0;
+        }
+
+        if (py > MainPanel.HEIGHT - size) {
+            py = MainPanel.HEIGHT - size;
+            vy = 0;
+        }
 
         vx = 0;
         vy = 0;
