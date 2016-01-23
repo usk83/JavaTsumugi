@@ -8,8 +8,8 @@ public class GameObject {
     protected int scale;
 
     public GameObject(int _px, int _py) {
-        this.px = _px;
-        this.py = _py;
+        px = _px;
+        py = _py;
     }
 
     public void move() {
