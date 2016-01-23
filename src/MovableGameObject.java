@@ -2,7 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MovableGameObject extends GameObject {
-    private static final float GRAVITY = 0.5f;
+    private static final float GRAVITY = 1.0f;
     protected float speed;
     protected float vx, vy;
 

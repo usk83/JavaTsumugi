@@ -12,6 +12,8 @@ import javax.swing.*;
 public class Mario extends MovableGameObject {
     private AudioClip jumpSound;
 
+    private Boolean isJumping;
+
     public Mario(float _px, float _py, float _speed) {
         super(_px, _py);
         speed = _speed;
@@ -22,6 +24,7 @@ public class Mario extends MovableGameObject {
         icon = icon.getScaledInstance(size, -1, Image.SCALE_FAST);
 
         jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/jump.wav"));
+        isJumping = false;
     }
 
     public void move() {
@@ -36,7 +39,11 @@ public class Mario extends MovableGameObject {
     }
 
     private void jump() {
-        jumpSound.play();
+        if (!isJumping) {
+            isJumping = true;
+            vy = -18;
+            jumpSound.play();
+        }
     }
 
     public void updateKeys(HashMap<Integer, Boolean> keys) {
@@ -49,6 +56,13 @@ public class Mario extends MovableGameObject {
 
         if (keys.get(KeyEvent.VK_SPACE)) {
             jump();
+        }
+        else {
+            // 画面下
+            if (py >= MainPanel.HEIGHT - size) {
+                isJumping = false;
+                jumpSound.stop();
+            }
         }
     }
 }
