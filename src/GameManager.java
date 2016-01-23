@@ -20,6 +20,8 @@ public class GameManager {
         gameObjects = new ArrayList<>();
         mario = new Mario(320, 160, 9);
         gameObjects.add(mario);
+        initObj();
+
         try {
             bgm = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("res/sound/bgm/01-main-theme-overworld.wav"));
@@ -41,6 +43,14 @@ public class GameManager {
 
     public static GameManager getInstance() {
         return instance;
+    }
+
+    public void initObj() {
+        gameObjects.add(new Block(256, 180));
+        gameObjects.add(new Block(288, 180));
+        gameObjects.add(new Block(320, 180));
+        gameObjects.add(new Block(352, 180));
+        gameObjects.add(new Block(384, 180));
     }
 
     public void update() {
