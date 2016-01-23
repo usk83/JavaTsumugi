@@ -46,7 +46,7 @@ public class Mario extends MovableGameObject {
         }
     }
 
-    public void updateKeys(HashMap<Integer, Boolean> keys) {
+    public void keyAction(HashMap<Integer, Boolean> keys) {
         if (keys.get(KeyEvent.VK_LEFT)) {
             vx = -1 * speed;
         }

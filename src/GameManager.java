@@ -44,7 +44,7 @@ public class GameManager {
     }
 
     public void update() {
-        mario.updateKeys(keys);
+        mario.keyAction(keys);
 
         for (int i = 0; i < gameObjects.size(); i++) {
             gameObjects.get(i).move();
