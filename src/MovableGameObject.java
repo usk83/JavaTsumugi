@@ -28,7 +28,6 @@ public class MovableGameObject extends GameObject {
         // 画面右
         if (px > MainPanel.WIDTH - size) {
             px = MainPanel.WIDTH - size;
-            vy = 0;
         }
 
         // 画面上
