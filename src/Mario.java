@@ -17,7 +17,7 @@ public class Mario extends MovableGameObject {
     public Mario(float _px, float _py, float _speed) {
         super(_px, _py);
         speed = _speed;
-        scale = 3;
+        scale = 2;
         ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource("res/mario/01.png"));
         icon = ii.getImage();
         size = icon.getWidth(null) * scale;
