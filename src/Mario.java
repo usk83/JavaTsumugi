@@ -9,16 +9,11 @@ import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Mario extends GameObject {
-    private static final int SPEED = 10;
-    private int vx, vy;
-
+public class Mario extends MovableGameObject {
     private AudioClip jumpSound;
 
-    public Mario(int _px, int _py) {
-        super(_px, _py);
-        vx = 0;
-        vy = 0;
+    public Mario(int _px, int _py, int _speed) {
+        super(_px, _py, _speed);
         scale = 3;
         ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource("res/mario/01.png"));
         icon = ii.getImage();
@@ -29,25 +24,7 @@ public class Mario extends GameObject {
     }
 
     public void move() {
-        px += vx;
-        py += vy;
-
-        if (px < 0) {
-            px = 0;
-        }
-
-        if (px > MainPanel.WIDTH - size) {
-            px = MainPanel.WIDTH - size;
-        }
-
-        if (py < 0) {
-            py = 0;
-        }
-
-        if (py > MainPanel.HEIGHT - size) {
-            py = MainPanel.HEIGHT - size;
-            vy = 0;
-        }
+        super.move();
 
         vx = 0;
         vy = 0;
@@ -63,10 +40,10 @@ public class Mario extends GameObject {
 
     public void updateKeys(HashMap<Integer, Boolean> keys) {
         if (keys.get(KeyEvent.VK_LEFT)) {
-            vx = -1 * SPEED;
+            vx = -1 * speed;
         }
         else if (keys.get(KeyEvent.VK_RIGHT)) {
-            vx = SPEED;
+            vx = speed;
         }
 
         if (keys.get(KeyEvent.VK_SPACE)) {

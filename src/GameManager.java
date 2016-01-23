@@ -18,7 +18,7 @@ public class GameManager {
 
     private GameManager() {
         gameObjects = new ArrayList<>();
-        mario = new Mario(320, 240);
+        mario = new Mario(320, 240, 10);
         gameObjects.add(mario);
         try {
             bgm = AudioSystem.getClip();
