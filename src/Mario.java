@@ -27,7 +27,6 @@ public class Mario extends MovableGameObject {
         super.move();
 
         vx = 0;
-        vy = 0;
     }
 
     public void draw(Graphics g) {
