@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -10,7 +11,7 @@ import javax.swing.JPanel;
  * 参考 <http://aidiary.hatenablog.com/entry/20060507/1251462851>
  */
 
-public class MainPanel extends JPanel implements Runnable {
+public class MainPanel extends JPanel implements Runnable, KeyListener {
     public static final int WIDTH = 640;
     public static final int HEIGHT = 320;
 
@@ -30,6 +31,9 @@ public class MainPanel extends JPanel implements Runnable {
         // ゲームループ開始
         gameLoop = new Thread(this);
         gameLoop.start();
+
+        setFocusable(true);
+        addKeyListener(this);
     }
 
     /**
@@ -101,5 +105,26 @@ public class MainPanel extends JPanel implements Runnable {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * キーがタイプされたとき
+     */
+    public void keyTyped(KeyEvent e) {
+        gameManager.keyTyped(e);
+    }
+
+    /**
+     * キーが押されたとき
+     */
+    public void keyPressed(KeyEvent e) {
+        gameManager.keyPressed(e);
+    }
+
+    /**
+     * キーが離されたとき
+     */
+    public void keyReleased(KeyEvent e) {
+        gameManager.keyReleased(e);
     }
 }
