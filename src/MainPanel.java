@@ -14,7 +14,7 @@ public class MainPanel extends JPanel implements Runnable {
     public static final int WIDTH = 640;
     public static final int HEIGHT = 320;
 
-    private GameObject mario;
+    private GameManager gameManager;
 
     // ダブルバッファリング（db）用
     private Graphics dbg;
@@ -25,7 +25,7 @@ public class MainPanel extends JPanel implements Runnable {
     public MainPanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-        mario = new Mario(320, 240, 1, 2);
+        gameManager = GameManager.getInstance();
 
         // ゲームループ開始
         gameLoop = new Thread(this);
@@ -55,7 +55,7 @@ public class MainPanel extends JPanel implements Runnable {
      * ゲーム状態を更新
      */
     private void gameUpdate() {
-        mario.move();
+        gameManager.update();
     }
 
     /**
@@ -81,8 +81,7 @@ public class MainPanel extends JPanel implements Runnable {
         dbg.setColor(Color.WHITE);
         dbg.fillRect(0, 0, WIDTH, HEIGHT);
 
-        // ボールをバッファへ描画する
-        mario.draw(dbg);
+        gameManager.render(dbg);
     }
 
     /**
