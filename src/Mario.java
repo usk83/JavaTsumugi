@@ -31,6 +31,7 @@ public class Mario extends MovableGameObject {
     }
 
     public void draw(Graphics g) {
+        super.draw(g);
         g.drawImage(icon, px, py, null);
     }
 
