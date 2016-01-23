@@ -15,13 +15,8 @@ public class Mario extends MovableGameObject {
     private Boolean isJumping;
 
     public Mario(float _px, float _py, float _speed) {
-        super(_px, _py);
+        super(_px, _py, "res/mario/01.png");
         speed = _speed;
-        scale = 2;
-        ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource("res/mario/01.png"));
-        icon = ii.getImage();
-        size = icon.getWidth(null) * scale;
-        icon = icon.getScaledInstance(size, -1, Image.SCALE_FAST);
 
         jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/jump.wav"));
         isJumping = false;
@@ -31,11 +26,6 @@ public class Mario extends MovableGameObject {
         super.move();
 
         vx = 0;
-    }
-
-    public void draw(Graphics g) {
-        super.draw(g);
-        g.drawImage(icon, (int)px, (int)py, null);
     }
 
     private void jump() {

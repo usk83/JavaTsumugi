@@ -6,8 +6,8 @@ public class MovableGameObject extends GameObject {
     protected float speed;
     protected float vx, vy;
 
-    public MovableGameObject(float _px, float _py) {
-        super(_px, _py);
+    public MovableGameObject(float _px, float _py, String _path) {
+        super(_px, _py, _path);
         speed = 0;
         vx = 0;
         vy = 0;
