@@ -12,7 +12,7 @@ import javax.swing.*;
 public class Mario extends MovableGameObject {
     private AudioClip jumpSound;
 
-    public Mario(int _px, int _py, int _speed) {
+    public Mario(float _px, float _py, float _speed) {
         super(_px, _py, _speed);
         scale = 3;
         ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource("res/mario/01.png"));
@@ -31,7 +31,7 @@ public class Mario extends MovableGameObject {
 
     public void draw(Graphics g) {
         super.draw(g);
-        g.drawImage(icon, px, py, null);
+        g.drawImage(icon, (int)px, (int)py, null);
     }
 
     private void jump() {

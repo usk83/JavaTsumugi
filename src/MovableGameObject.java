@@ -2,11 +2,11 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MovableGameObject extends GameObject {
-    private static final int GRAVITY = 1;
-    protected int speed;
-    protected int vx, vy;
+    private static final float GRAVITY = 0.5f;
+    protected float speed;
+    protected float vx, vy;
 
-    public MovableGameObject(int _px, int _py, int _speed) {
+    public MovableGameObject(float _px, float _py, float _speed) {
         super(_px, _py);
         speed = _speed;
         vx = 0;

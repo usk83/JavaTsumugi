@@ -2,12 +2,12 @@ import java.awt.*;
 import javax.swing.*;
 
 public class GameObject {
-    protected int px, py;
+    protected float px, py;
     protected int size;
     protected Image icon;
     protected int scale;
 
-    public GameObject(int _px, int _py) {
+    public GameObject(float _px, float _py) {
         px = _px;
         py = _py;
     }
@@ -18,7 +18,7 @@ public class GameObject {
     public void draw(Graphics g) {
     }
 
-    public int getPx(){
+    public float getPx(){
         return px;
     }
 
@@ -26,7 +26,7 @@ public class GameObject {
         this.px = px;
     }
 
-    public int getPy(){
+    public float getPy(){
         return py;
     }
 
