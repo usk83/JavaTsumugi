@@ -136,6 +136,9 @@ public class GameManager {
      */
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+        if (keys.get(key) == null) {
+            return;
+        }
         if (keys.get(key) == KeyStatus.RELEASED) {
             keys.replace(key, KeyStatus.PRESSED);
         }
