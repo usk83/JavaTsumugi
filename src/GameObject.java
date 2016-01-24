@@ -1,7 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class GameObject {
+public abstract class GameObject {
     protected float px, py;
     protected Image icon;
 
@@ -12,9 +12,6 @@ public class GameObject {
         ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource(path));
         icon = ii.getImage();
         icon = icon.getScaledInstance(MainPanel.TILE_SIZE, -1, Image.SCALE_FAST);
-    }
-
-    public void move() {
     }
 
     public void draw(Graphics g) {
