@@ -15,25 +15,15 @@ public class Mario extends MovableGameObject {
 
     private AudioClip jumpSound;
 
-    private int iconCount; // アニメーション用カウンタ
-    private int animWait; // アニメーション用スリープ時間
-
-    private boolean isForward; // 正面を向いているか
     private boolean isStop; // 止まっているか
 
     public Mario(float _px, float _py) {
-        super(_px, _py, "res/mario/mario.png");
-        imgWidth = imgWidth / 14;
+        super(_px, _py, "res/mario/mario.png", 14);
 
         jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/jump.wav"));
         iconCount = 1;
         animWait = 50;
-        isForward = true;
         isStop = true;
-
-        // アニメーション用スレッドを開始
-        AnimationThread thread = new AnimationThread();
-        thread.start();
     }
 
     public void move() {
@@ -44,25 +34,6 @@ public class Mario extends MovableGameObject {
             jumpSound.stop();
         }
         vx = 0;
-    }
-
-    public void draw(Graphics g, int offsetX, int offsetY) {
-        int xs, xe;
-        if (isForward) {
-            xs = 0;
-            xe = imgWidth;
-        }
-        else {
-            xs = imgWidth;
-            xe = 0;
-        }
-
-        g.drawImage(icon,
-                    (int)px + offsetX, (int)py + offsetY,
-                    (int)px + offsetX + width, (int)py + offsetY + height,
-                    iconCount * imgWidth + xs, 0,
-                    iconCount * imgWidth + xe, imgHeight,
-                    null);
     }
 
     private void jump() {
@@ -97,30 +68,19 @@ public class Mario extends MovableGameObject {
         }
     }
 
-    // アニメーション用スレッド
-    private class AnimationThread extends Thread {
-        public void run() {
-            while (true) {
-                if (onGround) {
-                    if (!isStop) {
-                        iconCount += 1;
-                        if (iconCount > 3) {
-                            iconCount = 0;
-                        }
-                    }
+    protected void runAnimation() {
+        if (onGround) {
+            if (!isStop) {
+                iconCount += 1;
+                if (iconCount > 3) {
+                    iconCount = 0;
                 }
-                else {
-                    // ジャンプ中でなければ
-                    if (iconCount != 5) {
-                        iconCount = 3;
-                    }
-                }
-
-                try {
-                    Thread.sleep(animWait);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            }
+        }
+        else {
+            // ジャンプ中でなければ
+            if (iconCount != 5) {
+                iconCount = 3;
             }
         }
     }
