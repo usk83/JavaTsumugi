@@ -55,6 +55,9 @@ public class Map {
                         case 'B': // ブロック
                             gameManager.addGameObject(new Block(tilesToPixels(j), tilesToPixels(i)));
                             break;
+                        case 'c': // コイン
+                            gameManager.addGameObject(new Coin(tilesToPixels(j), tilesToPixels(i)));
+                            break;
                     }
                 }
             }
