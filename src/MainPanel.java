@@ -28,6 +28,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         gameManager = GameManager.getInstance();
+        gameManager.init();
 
         // ゲームループ開始
         gameLoop = new Thread(this);

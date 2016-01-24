@@ -13,6 +13,8 @@ public class GameManager {
     private List<GameObject> gameObjects;
     private List<MovableGameObject> movableGameObjects;
 
+    private Map map;
+
     private Clip bgm;
 
     HashMap<Integer, Boolean> keys;
@@ -20,9 +22,9 @@ public class GameManager {
     private GameManager() {
         gameObjects = new ArrayList<>();
         movableGameObjects= new ArrayList<>();
+
         mario = new Mario(320, 160, 9);
         movableGameObjects.add(mario);
-        initObj();
 
         try {
             bgm = AudioSystem.getClip();
@@ -47,12 +49,20 @@ public class GameManager {
         return instance;
     }
 
-    public void initObj() {
-        gameObjects.add(new Block(256, 180));
-        gameObjects.add(new Block(288, 180));
-        gameObjects.add(new Block(320, 180));
-        gameObjects.add(new Block(352, 180));
-        gameObjects.add(new Block(384, 180));
+    public void init() {
+        initMap();
+    }
+
+    public void initMap() {
+        // マップを作成
+        map = new Map("res/map/01.dat");
+    }
+
+    public void addGameObject(GameObject go) {
+        gameObjects.add(go);
+    }
+    public void addMovableGameObject(MovableGameObject mgo) {
+        movableGameObjects.add(mgo);
     }
 
     public void update() {
