@@ -18,22 +18,6 @@ public abstract class GameObject {
         g.drawImage(icon, (int)px, (int)py, null);
     }
 
-    public float getPx(){
-        return px;
-    }
-
-    public void setPx(int px){
-        this.px = px;
-    }
-
-    public float getPy(){
-        return py;
-    }
-
-    public void setPy(int py){
-        this.py = py;
-    }
-
     protected void loadImage(String name) {
         ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource(name));
         icon = ii.getImage();
