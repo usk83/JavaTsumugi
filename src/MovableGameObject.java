@@ -26,8 +26,8 @@ public class MovableGameObject extends GameObject {
         }
 
         // 画面右
-        if (px > MainPanel.WIDTH - size) {
-            px = MainPanel.WIDTH - size;
+        if (px > MainPanel.WIDTH - MainPanel.TILE_SIZE) {
+            px = MainPanel.WIDTH - MainPanel.TILE_SIZE;
         }
 
         // 画面上
@@ -36,8 +36,8 @@ public class MovableGameObject extends GameObject {
         }
 
         // 画面下
-        if (py > MainPanel.HEIGHT - size) {
-            py = MainPanel.HEIGHT - size;
+        if (py > MainPanel.HEIGHT - MainPanel.TILE_SIZE) {
+            py = MainPanel.HEIGHT - MainPanel.TILE_SIZE;
             vy = 0;
         }
     }

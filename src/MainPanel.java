@@ -12,8 +12,9 @@ import javax.swing.JPanel;
  */
 
 public class MainPanel extends JPanel implements Runnable, KeyListener {
-    public static final int WIDTH = 640;
-    public static final int HEIGHT = 320;
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 480;
+    public static final int TILE_SIZE = 32;
 
     private GameManager gameManager;
 

@@ -49,7 +49,7 @@ public class Mario extends MovableGameObject {
         }
         else {
             // 画面下
-            if (py >= MainPanel.HEIGHT - size) {
+            if (py >= MainPanel.HEIGHT - MainPanel.TILE_SIZE) {
                 isJumping = false;
                 jumpSound.stop();
             }

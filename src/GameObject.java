@@ -2,10 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class GameObject {
-    private static final int SCALE = 2;
-
     protected float px, py;
-    protected int size;
     protected Image icon;
 
     public GameObject(float _px, float _py, String path) {
@@ -14,8 +11,7 @@ public class GameObject {
 
         ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource(path));
         icon = ii.getImage();
-        size = icon.getWidth(null) * SCALE;
-        icon = icon.getScaledInstance(size, -1, Image.SCALE_FAST);
+        icon = icon.getScaledInstance(MainPanel.TILE_SIZE, -1, Image.SCALE_FAST);
     }
 
     public void move() {
