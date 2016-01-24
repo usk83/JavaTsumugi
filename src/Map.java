@@ -35,7 +35,6 @@ public class Map {
             line = br.readLine();
             col = Integer.parseInt(line);
 
-            System.out.println("row: " + row + " col: " + col);
             // マップを作成
             map = new char[row][col];
             for (int i = 0; i < row; i++) {
@@ -49,7 +48,6 @@ public class Map {
                             break;
                     }
                 }
-                System.out.println("");
             }
         } catch (Exception e) {
             e.printStackTrace();
