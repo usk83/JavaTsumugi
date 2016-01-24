@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 public class Map {
     private GameManager gameManager;
 
+    private int row; // 行数
+    private int col; // 列数
+
     private char[][] map; // マップ
 
     public Map(String mapPath) {
@@ -18,9 +21,6 @@ public class Map {
      * マップをロードする
      */
     private void loadMap(String mapPath) {
-        int row; // 行数
-        int col; // 列数
-
         try {
             // ファイルを開く
             BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -55,9 +55,51 @@ public class Map {
     }
 
     /**
+     * (newPx, newPy)で衝突するブロックの座標を返す
+     */
+    public Point getTileCollision(MovableGameObject mgo, Float newPx, Float newPy) {
+
+        Float fromX = Math.min(mgo.getPx(), newPx);
+        Float fromY = Math.min(mgo.getPy(), newPy);
+        Float toX = Math.max(mgo.getPx(), newPx);
+        Float toY = Math.max(mgo.getPy(), newPy);
+
+        int fromTileX = pixelsToTiles(fromX);
+        int fromTileY = pixelsToTiles(fromY);
+        int toTileX = pixelsToTiles(toX + mgo.getWidth() - 1);
+        int toTileY = pixelsToTiles(toY + mgo.getHeight() - 1);
+
+        // 衝突しているか調べる
+        for (int x = fromTileX; x <= toTileX; x++) {
+            for (int y = fromTileY; y <= toTileY; y++) {
+                // 画面外は衝突
+                if (x < 0 || x >= col) {
+                    return new Point(x, y);
+                }
+                if (y < 0 || y >= row) {
+                    return new Point(x, y);
+                }
+                // ブロックがあったら衝突
+                if (map[y][x] != ' ') {
+                    return new Point(x, y);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * タイル単位をピクセル単位に変更する
      */
     public static int tilesToPixels(int tiles) {
         return tiles * MainPanel.TILE_SIZE;
+    }
+
+    /**
+     * ピクセル単位をタイル単位に変更する
+     */
+    public static int pixelsToTiles(float pixels) {
+        return (int)Math.floor(pixels / MainPanel.TILE_SIZE);
     }
 }
