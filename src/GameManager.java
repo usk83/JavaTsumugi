@@ -11,6 +11,7 @@ public class GameManager {
 
     private Mario mario;
     private List<GameObject> gameObjects;
+    private List<MovableGameObject> movableGameObjects;
 
     private Clip bgm;
 
@@ -18,8 +19,9 @@ public class GameManager {
 
     private GameManager() {
         gameObjects = new ArrayList<>();
+        movableGameObjects= new ArrayList<>();
         mario = new Mario(320, 160, 9);
-        gameObjects.add(mario);
+        movableGameObjects.add(mario);
         initObj();
 
         try {
@@ -56,12 +58,16 @@ public class GameManager {
     public void update() {
         mario.keyAction(keys);
 
-        for (int i = 0; i < gameObjects.size(); i++) {
-            gameObjects.get(i).move();
+        for (int i = 0; i < movableGameObjects.size(); i++) {
+            movableGameObjects.get(i).move();
         }
     }
 
     public void render(Graphics g) {
+        for (int i = 0; i < movableGameObjects.size(); i++) {
+            movableGameObjects.get(i).draw(g);
+        }
+
         for (int i = 0; i < gameObjects.size(); i++) {
             gameObjects.get(i).draw(g);
         }
