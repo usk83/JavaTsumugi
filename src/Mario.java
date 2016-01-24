@@ -21,7 +21,7 @@ public class Mario extends MovableGameObject {
     public Mario(float _px, float _py) {
         super(_px, _py, "res/mario/mario.png", 14);
 
-        jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/jump.wav"));
+        jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/Jump.wav"));
         iconCount = 1;
         animWait = 50;
         isStop = true;
