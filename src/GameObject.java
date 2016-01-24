@@ -4,6 +4,8 @@ import javax.swing.*;
 public abstract class GameObject {
     protected int width;
     protected int height;
+    protected int imgWidth;
+    protected int imgHeight;
     protected float px, py;
     protected Image icon;
 
@@ -12,19 +14,19 @@ public abstract class GameObject {
         height = MainPanel.TILE_SIZE;
         px = _px;
         py = _py;
-
-        ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource(path));
-        icon = ii.getImage();
-        icon = icon.getScaledInstance(width, -1, Image.SCALE_FAST);
+        loadImage(path);
+        // icon = icon.getScaledInstance(width, -1, Image.SCALE_FAST);
     }
 
     public void draw(Graphics g, int offsetX, int offsetY) {
-        g.drawImage(icon, (int)px + offsetX, (int)py + offsetY, null);
+        g.drawImage(icon, (int)px + offsetX, (int)py + offsetY, width, height, null);
     }
 
-    protected void loadImage(String name) {
-        ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource(name));
+    protected void loadImage(String path) {
+        ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource(path));
         icon = ii.getImage();
+        imgWidth = icon.getWidth(null);
+        imgHeight = icon.getHeight(null);
     }
 
     public float getPx(){
