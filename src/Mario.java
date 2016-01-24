@@ -18,6 +18,9 @@ public class Mario extends MovableGameObject {
     private int anim_count; // アニメーション用カウンタ
     private int anim_wait; // アニメーション用スリープ時間
 
+    private boolean isForward; // 正面を向いているか
+    private boolean isStop; // 止まっているか
+
     public Mario(float _px, float _py) {
         super(_px, _py, "res/mario/mario.png");
         imgWidth = imgWidth / 14;
@@ -25,6 +28,8 @@ public class Mario extends MovableGameObject {
         jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/jump.wav"));
         anim_count = 1;
         anim_wait = 50;
+        isForward = true;
+        isStop = true;
 
         // アニメーション用スレッドを開始
         AnimationThread thread = new AnimationThread();
@@ -42,11 +47,21 @@ public class Mario extends MovableGameObject {
     }
 
     public void draw(Graphics g, int offsetX, int offsetY) {
+        int xs, xe;
+        if (isForward) {
+            xs = 0;
+            xe = imgWidth;
+        }
+        else {
+            xs = imgWidth;
+            xe = 0;
+        }
+
         g.drawImage(icon,
                     (int)px + offsetX, (int)py + offsetY,
                     (int)px + offsetX + width, (int)py + offsetY + height,
-                    anim_count * imgWidth, 0,
-                    anim_count * imgWidth + imgWidth, imgHeight,
+                    anim_count * imgWidth + xs, 0,
+                    anim_count * imgWidth + xe, imgHeight,
                     null);
     }
 
@@ -54,19 +69,30 @@ public class Mario extends MovableGameObject {
         if (onGround) {
             onGround = false;
             vy = JUMP_SPEED;
+            anim_count = 5;
             jumpSound.play();
         }
     }
 
-    public void keyAction(HashMap<Integer, Boolean> keys) {
-        if (keys.get(KeyEvent.VK_LEFT)) {
+    public void keyAction(HashMap<Integer, Integer> keys) {
+        if (keys.get(KeyEvent.VK_LEFT) <= KeyStatus.PRESSING) {
             vx = -1 * SPEED;
+            isForward = false;
+            isStop = false;
         }
-        else if (keys.get(KeyEvent.VK_RIGHT)) {
+        else if (keys.get(KeyEvent.VK_RIGHT) <= KeyStatus.PRESSING) {
             vx = SPEED;
+            isForward = true;
+            isStop = false;
+        }
+        else {
+            isStop = true;
+            if (onGround) {
+                anim_count = 0;
+            }
         }
 
-        if (keys.get(KeyEvent.VK_SPACE)) {
+        if (keys.get(KeyEvent.VK_SPACE) == KeyStatus.PRESSED) {
             jump();
         }
     }
@@ -75,9 +101,19 @@ public class Mario extends MovableGameObject {
     private class AnimationThread extends Thread {
         public void run() {
             while (true) {
-                anim_count++;
-                if (anim_count > 3) {
-                    anim_count = 1;
+                if (onGround) {
+                    if (!isStop) {
+                        anim_count += 1;
+                        if (anim_count > 3) {
+                            anim_count = 0;
+                        }
+                    }
+                }
+                else {
+                    // ジャンプ中でなければ
+                    if (anim_count != 5) {
+                        anim_count = 3;
+                    }
                 }
 
                 try {

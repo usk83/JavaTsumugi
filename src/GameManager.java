@@ -20,17 +20,17 @@ public class GameManager {
 
     private Clip bgm;
 
-    HashMap<Integer, Boolean> keys;
+    HashMap<Integer, Integer> keys;
 
     private GameManager() {
         gameObjects = new ArrayList<>();
         movableGameObjects= new ArrayList<>();
 
         // キーは押していない状態
-        keys = new HashMap<Integer, Boolean>(3);
-        keys.put(KeyEvent.VK_LEFT, false);
-        keys.put(KeyEvent.VK_RIGHT, false);
-        keys.put(KeyEvent.VK_SPACE, false);
+        keys = new HashMap<Integer, Integer>(3);
+        keys.put(KeyEvent.VK_LEFT, KeyStatus.RELEASED);
+        keys.put(KeyEvent.VK_RIGHT, KeyStatus.RELEASED);
+        keys.put(KeyEvent.VK_SPACE, KeyStatus.RELEASED);
     }
 
     public static GameManager getInstance() {
@@ -117,12 +117,18 @@ public class GameManager {
      */
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        keys.replace(key, true);
+        if (keys.get(key) == KeyStatus.RELEASED) {
+            keys.replace(key, KeyStatus.PRESSED);
+        }
+        else {
+            keys.replace(key, KeyStatus.PRESSING);
+        }
+
         if (key == KeyEvent.VK_LEFT) {
-            keys.put(KeyEvent.VK_RIGHT, false);
+            keys.put(KeyEvent.VK_RIGHT, KeyStatus.RELEASED);
         }
         else if (key == KeyEvent.VK_LEFT) {
-            keys.put(KeyEvent.VK_LEFT, false);
+            keys.put(KeyEvent.VK_LEFT, KeyStatus.RELEASED);
         }
     }
 
@@ -130,6 +136,6 @@ public class GameManager {
      * キーが離されたとき
      */
     public void keyReleased(KeyEvent e) {
-        keys.replace(e.getKeyCode(), false);
+        keys.replace(e.getKeyCode(), KeyStatus.RELEASED);
     }
 }
