@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.*;
 
@@ -66,6 +67,20 @@ public class Mario extends MovableGameObject {
         if (keys.get(KeyEvent.VK_SPACE) == KeyStatus.PRESSED) {
             jump();
         }
+    }
+
+    public boolean isCollision(GameObject go) {
+        Rectangle marioRect = new Rectangle((int)px, (int)py,
+                                             width, height);
+        Rectangle goRect = new Rectangle((int)go.getPx(),
+                                             (int)go.getPy(),
+                                             go.getWidth(),
+                                             go.getHeight());
+        // マリオの矩形と対象オブジェクトの矩形が重なっているか調べる
+        if (marioRect.intersects(goRect)) {
+            return true;
+        }
+        return false;
     }
 
     protected void runAnimation() {

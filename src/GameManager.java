@@ -77,6 +77,7 @@ public class GameManager {
         for (int i = 0; i < movableGameObjects.size(); i++) {
             movableGameObjects.get(i).move();
         }
+        checkCollision();
     }
 
     public void render(Graphics g) {
@@ -105,6 +106,24 @@ public class GameManager {
     public Point getTileCollision(MovableGameObject mgo, Float newPx, Float newPy) {
         return map.getTileCollision(mgo, newPx, newPy);
     }
+
+    private void checkCollision() {
+        Iterator iterator = gameObjects.iterator();
+        while (iterator.hasNext()) {
+            GameObject go = (GameObject)iterator.next();
+
+            // マリオと接触してたら
+            if (mario.isCollision(go)) {
+                // コインだったら削除する
+                if (go instanceof Coin) {
+                    Coin coin = (Coin)go;
+                    coin.playCoinSound(); // 消滅時のサウンド再生
+                    gameObjects.remove(coin); // 削除
+                    break;
+                 }
+             }
+         }
+     }
 
     /**
      * キーがタイプされたとき

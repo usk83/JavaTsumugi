@@ -99,7 +99,7 @@ public class Map {
                     return new Point(x, y);
                 }
                 // ブロックがあったら衝突
-                if (map[y][x] != ' ') {
+                if (map[y][x] == 'B') {
                     return new Point(x, y);
                 }
             }
