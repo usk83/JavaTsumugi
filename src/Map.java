@@ -76,7 +76,14 @@ public class Map {
                 if (x < 0 || x >= col) {
                     return new Point(x, y);
                 }
-                if (y < 0 || y >= row) {
+                if (y < 0) {
+                    // 上方向突き抜けokにする
+                    // TODO: 画面外でブロックに乗った時の処理修正
+                    return null;
+                }
+                else if (y >= row) {
+                    // TODO: 落ちた時のゲームオーバー処理
+                    // TODO: 穴に落ちたら姿が見えなくなって終了
                     return new Point(x, y);
                 }
                 // ブロックがあったら衝突
