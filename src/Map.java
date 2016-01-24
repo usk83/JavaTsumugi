@@ -9,6 +9,8 @@ public class Map {
 
     private int row; // 行数
     private int col; // 列数
+    private int width; // 幅
+    private int height; // 高さ
 
     private char[][] map; // マップ
 
@@ -25,15 +27,22 @@ public class Map {
             // ファイルを開く
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     getClass().getClassLoader().getResourceAsStream(mapPath)));
+
             // 重力の値を読み込む
             String line = br.readLine();
             gameManager.gravity = Float.parseFloat(line);
+
             // 行数を読み込む
             line = br.readLine();
             row = Integer.parseInt(line);
+
             // 列数を読み込む
             line = br.readLine();
             col = Integer.parseInt(line);
+
+            // 幅と高さの設定
+            width = MainPanel.TILE_SIZE * col;
+            height = MainPanel.TILE_SIZE * row;
 
             // マップを作成
             map = new char[row][col];
@@ -108,5 +117,13 @@ public class Map {
      */
     public static int pixelsToTiles(float pixels) {
         return (int)Math.floor(pixels / MainPanel.TILE_SIZE);
+    }
+
+    public int getWidth(){
+      return width;
+    }
+
+    public int getHeight(){
+      return height;
     }
 }

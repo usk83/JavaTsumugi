@@ -18,8 +18,8 @@ public abstract class GameObject {
         icon = icon.getScaledInstance(width, -1, Image.SCALE_FAST);
     }
 
-    public void draw(Graphics g) {
-        g.drawImage(icon, (int)px, (int)py, null);
+    public void draw(Graphics g, int offsetX, int offsetY) {
+        g.drawImage(icon, (int)px + offsetX, (int)py + offsetY, null);
     }
 
     protected void loadImage(String name) {

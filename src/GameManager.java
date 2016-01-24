@@ -80,12 +80,25 @@ public class GameManager {
     }
 
     public void render(Graphics g) {
+
+        // X方向のオフセットを計算
+        int offsetX = MainPanel.WIDTH / 2 - (int)mario.getPx();
+        // マップの端ではスクロールしないようにする
+        offsetX = Math.min(offsetX, 0);
+        offsetX = Math.max(offsetX, MainPanel.WIDTH - map.getWidth());
+
+        // Y方向のオフセットを計算
+        int offsetY = MainPanel.HEIGHT / 2 - (int)mario.getPy();
+        // マップの端ではスクロールしないようにする
+        offsetY = Math.min(offsetY, 0);
+        offsetY = Math.max(offsetY, MainPanel.HEIGHT - map.getHeight());
+
         for (int i = 0; i < movableGameObjects.size(); i++) {
-            movableGameObjects.get(i).draw(g);
+            movableGameObjects.get(i).draw(g, offsetX, offsetY);
         }
 
         for (int i = 0; i < gameObjects.size(); i++) {
-            gameObjects.get(i).draw(g);
+            gameObjects.get(i).draw(g, offsetX, offsetY);
         }
     }
 
