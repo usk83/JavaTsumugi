@@ -9,6 +9,8 @@ public class GameManager {
 
     private static final GameManager instance = new GameManager();
 
+    public static double gravity = 1.0;
+
     private Mario mario;
     private List<GameObject> gameObjects;
     private List<MovableGameObject> movableGameObjects;

@@ -25,8 +25,11 @@ public class Map {
             // ファイルを開く
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     getClass().getClassLoader().getResourceAsStream(mapPath)));
-            // 行数を読み込む
+            // 重力の値を読み込む
             String line = br.readLine();
+            gameManager.gravity = Float.parseFloat(line);
+            // 行数を読み込む
+            line = br.readLine();
             row = Integer.parseInt(line);
             // 列数を読み込む
             line = br.readLine();
