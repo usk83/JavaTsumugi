@@ -1,5 +1,6 @@
 import java.awt.Graphics;
 import java.awt.event.*;
+import java.awt.Point;
 import java.io.IOException;
 import java.util.*;
 
@@ -9,8 +10,13 @@ public class GameManager {
 
     private static final GameManager instance = new GameManager();
 
+    public static double gravity = 1.0;
+
     private Mario mario;
     private List<GameObject> gameObjects;
+    private List<MovableGameObject> movableGameObjects;
+
+    private Map map;
 
     private Clip bgm;
 
@@ -18,21 +24,7 @@ public class GameManager {
 
     private GameManager() {
         gameObjects = new ArrayList<>();
-        mario = new Mario(320, 160, 9);
-        gameObjects.add(mario);
-        initObj();
-
-        try {
-            bgm = AudioSystem.getClip();
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("res/sound/bgm/01-main-theme-overworld.wav"));
-            bgm.open(inputStream);
-            bgm.loop(Clip.LOOP_CONTINUOUSLY);
-        }
-        catch (LineUnavailableException |
-               UnsupportedAudioFileException |
-               IOException e) {
-            System.out.println("play sound error: " + e.getMessage());
-        }
+        movableGameObjects= new ArrayList<>();
 
         // キーは押していない状態
         keys = new HashMap<Integer, Boolean>(3);
@@ -45,26 +37,60 @@ public class GameManager {
         return instance;
     }
 
-    public void initObj() {
-        gameObjects.add(new Block(256, 180));
-        gameObjects.add(new Block(288, 180));
-        gameObjects.add(new Block(320, 180));
-        gameObjects.add(new Block(352, 180));
-        gameObjects.add(new Block(384, 180));
+    public void init() {
+        // マリオを追加
+        mario = new Mario(320, 160);
+        movableGameObjects.add(mario);
+
+        // BGMの読み込み
+        try {
+            bgm = AudioSystem.getClip();
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("res/sound/bgm/01-main-theme-overworld.wav"));
+            bgm.open(inputStream);
+            bgm.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+        catch (LineUnavailableException |
+               UnsupportedAudioFileException |
+               IOException e) {
+            System.out.println("play sound error: " + e.getMessage());
+        }
+
+        // マップの読み込み
+        initMap();
+    }
+
+    public void initMap() {
+        // マップを作成
+        map = new Map("res/map/01.dat");
+    }
+
+    public void addGameObject(GameObject go) {
+        gameObjects.add(go);
+    }
+    public void addMovableGameObject(MovableGameObject mgo) {
+        movableGameObjects.add(mgo);
     }
 
     public void update() {
         mario.keyAction(keys);
 
-        for (int i = 0; i < gameObjects.size(); i++) {
-            gameObjects.get(i).move();
+        for (int i = 0; i < movableGameObjects.size(); i++) {
+            movableGameObjects.get(i).move();
         }
     }
 
     public void render(Graphics g) {
+        for (int i = 0; i < movableGameObjects.size(); i++) {
+            movableGameObjects.get(i).draw(g);
+        }
+
         for (int i = 0; i < gameObjects.size(); i++) {
             gameObjects.get(i).draw(g);
         }
+    }
+
+    public Point getTileCollision(MovableGameObject mgo, Float newPx, Float newPy) {
+        return map.getTileCollision(mgo, newPx, newPy);
     }
 
     /**
