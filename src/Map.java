@@ -9,6 +9,8 @@ public class Map {
 
     private int row; // 行数
     private int col; // 列数
+    private int width; // 幅
+    private int height; // 高さ
 
     private char[][] map; // マップ
 
@@ -25,15 +27,22 @@ public class Map {
             // ファイルを開く
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     getClass().getClassLoader().getResourceAsStream(mapPath)));
+
             // 重力の値を読み込む
             String line = br.readLine();
             gameManager.gravity = Float.parseFloat(line);
+
             // 行数を読み込む
             line = br.readLine();
             row = Integer.parseInt(line);
+
             // 列数を読み込む
             line = br.readLine();
             col = Integer.parseInt(line);
+
+            // 幅と高さの設定
+            width = MainPanel.TILE_SIZE * col;
+            height = MainPanel.TILE_SIZE * row;
 
             // マップを作成
             map = new char[row][col];
@@ -76,7 +85,14 @@ public class Map {
                 if (x < 0 || x >= col) {
                     return new Point(x, y);
                 }
-                if (y < 0 || y >= row) {
+                if (y < 0) {
+                    // 上方向突き抜けokにする
+                    // TODO: 画面外でブロックに乗った時の処理修正
+                    return null;
+                }
+                else if (y >= row) {
+                    // TODO: 落ちた時のゲームオーバー処理
+                    // TODO: 穴に落ちたら姿が見えなくなって終了
                     return new Point(x, y);
                 }
                 // ブロックがあったら衝突
@@ -101,5 +117,13 @@ public class Map {
      */
     public static int pixelsToTiles(float pixels) {
         return (int)Math.floor(pixels / MainPanel.TILE_SIZE);
+    }
+
+    public int getWidth(){
+      return width;
+    }
+
+    public int getHeight(){
+      return height;
     }
 }
