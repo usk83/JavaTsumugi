@@ -4,16 +4,18 @@ import javax.swing.*;
 public abstract class MovableGameObject extends GameObject {
     protected float speed;
     protected float vx, vy;
-    protected boolean onGround;
+    protected boolean onGround; // 地面に接しているか
+    protected boolean isForward; // 正面を向いているか
 
     private GameManager gameManager;
 
-    public MovableGameObject(float _px, float _py, String _path) {
-        super(_px, _py, _path);
+    public MovableGameObject(float _px, float _py, String _path, int _numOfSprites) {
+        super(_px, _py, _path, _numOfSprites);
         speed = 0;
         vx = 0;
         vy = 0;
         onGround = false;
+        isForward = true;
         gameManager = GameManager.getInstance();
     }
 
@@ -68,5 +70,18 @@ public abstract class MovableGameObject extends GameObject {
 
     private void addGravity() {
         vy += GameManager.gravity;
+    }
+
+    public void draw(Graphics g, int offsetX, int offsetY) {
+        if (isForward) {
+            xs = 0;
+            xe = imgWidth;
+        }
+        else {
+            xs = imgWidth;
+            xe = 0;
+        }
+
+        super.draw(g, offsetX, offsetY);
     }
 }

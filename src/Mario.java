@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.*;
 
@@ -15,25 +16,15 @@ public class Mario extends MovableGameObject {
 
     private AudioClip jumpSound;
 
-    private int anim_count; // アニメーション用カウンタ
-    private int anim_wait; // アニメーション用スリープ時間
-
-    private boolean isForward; // 正面を向いているか
     private boolean isStop; // 止まっているか
 
     public Mario(float _px, float _py) {
-        super(_px, _py, "res/mario/mario.png");
-        imgWidth = imgWidth / 14;
+        super(_px, _py, "res/mario/mario.png", 14);
 
-        jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/jump.wav"));
-        anim_count = 1;
-        anim_wait = 50;
-        isForward = true;
+        jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/Jump.wav"));
+        iconCount = 1;
+        animWait = 50;
         isStop = true;
-
-        // アニメーション用スレッドを開始
-        AnimationThread thread = new AnimationThread();
-        thread.start();
     }
 
     public void move() {
@@ -46,30 +37,11 @@ public class Mario extends MovableGameObject {
         vx = 0;
     }
 
-    public void draw(Graphics g, int offsetX, int offsetY) {
-        int xs, xe;
-        if (isForward) {
-            xs = 0;
-            xe = imgWidth;
-        }
-        else {
-            xs = imgWidth;
-            xe = 0;
-        }
-
-        g.drawImage(icon,
-                    (int)px + offsetX, (int)py + offsetY,
-                    (int)px + offsetX + width, (int)py + offsetY + height,
-                    anim_count * imgWidth + xs, 0,
-                    anim_count * imgWidth + xe, imgHeight,
-                    null);
-    }
-
     private void jump() {
         if (onGround) {
             onGround = false;
             vy = JUMP_SPEED;
-            anim_count = 5;
+            iconCount = 5;
             jumpSound.play();
         }
     }
@@ -88,7 +60,7 @@ public class Mario extends MovableGameObject {
         else {
             isStop = true;
             if (onGround) {
-                anim_count = 0;
+                iconCount = 0;
             }
         }
 
@@ -97,30 +69,33 @@ public class Mario extends MovableGameObject {
         }
     }
 
-    // アニメーション用スレッド
-    private class AnimationThread extends Thread {
-        public void run() {
-            while (true) {
-                if (onGround) {
-                    if (!isStop) {
-                        anim_count += 1;
-                        if (anim_count > 3) {
-                            anim_count = 0;
-                        }
-                    }
-                }
-                else {
-                    // ジャンプ中でなければ
-                    if (anim_count != 5) {
-                        anim_count = 3;
-                    }
-                }
+    public boolean isCollision(GameObject go) {
+        Rectangle marioRect = new Rectangle((int)px, (int)py,
+                                             width, height);
+        Rectangle goRect = new Rectangle((int)go.getPx(),
+                                             (int)go.getPy(),
+                                             go.getWidth(),
+                                             go.getHeight());
+        // マリオの矩形と対象オブジェクトの矩形が重なっているか調べる
+        if (marioRect.intersects(goRect)) {
+            return true;
+        }
+        return false;
+    }
 
-                try {
-                    Thread.sleep(anim_wait);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+    protected void runAnimation() {
+        if (onGround) {
+            if (!isStop) {
+                iconCount += 1;
+                if (iconCount > 3) {
+                    iconCount = 0;
                 }
+            }
+        }
+        else {
+            // ジャンプ中でなければ
+            if (iconCount != 5) {
+                iconCount = 3;
             }
         }
     }

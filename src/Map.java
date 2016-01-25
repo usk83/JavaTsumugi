@@ -55,6 +55,9 @@ public class Map {
                         case 'B': // ブロック
                             gameManager.addGameObject(new Block(tilesToPixels(j), tilesToPixels(i)));
                             break;
+                        case 'c': // コイン
+                            gameManager.addGameObject(new Coin(tilesToPixels(j), tilesToPixels(i)));
+                            break;
                     }
                 }
             }
@@ -96,7 +99,7 @@ public class Map {
                     return new Point(x, y);
                 }
                 // ブロックがあったら衝突
-                if (map[y][x] != ' ') {
+                if (map[y][x] == 'B') {
                     return new Point(x, y);
                 }
             }
