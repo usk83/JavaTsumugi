@@ -55,6 +55,9 @@ public class Map {
                         case 'B': // ブロック
                             gameManager.addGameObject(new Block(tilesToPixels(j), tilesToPixels(i)));
                             break;
+                        case 'C': // コインブロック
+                            gameManager.addGameObject(new CoinBlock(tilesToPixels(j), tilesToPixels(i)));
+                            break;
                         case 'c': // コイン
                             gameManager.addGameObject(new Coin(tilesToPixels(j), tilesToPixels(i)));
                             break;
@@ -99,8 +102,8 @@ public class Map {
                     // TODO: 穴に落ちたら姿が見えなくなって終了
                     return new Point(x, y);
                 }
-                // ブロックがあったら衝突
-                if (map[y][x] == 'B') {
+                // ブロックまたはコインブロックがあったら衝突
+                if (map[y][x] == 'B' || map[y][x] == 'C') {
                     return new Point(x, y);
                 }
             }
