@@ -7,6 +7,8 @@ public abstract class MovableGameObject extends GameObject {
     protected boolean onGround; // 地面に接しているか
     protected boolean isForward; // 正面を向いているか
 
+    protected int objDire;
+
     private GameManager gameManager;
 
     public MovableGameObject(float _px, float _py, String _path, int _numOfSprites) {

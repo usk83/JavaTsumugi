@@ -59,8 +59,7 @@ public class Map {
                             gameManager.addGameObject(new Coin(tilesToPixels(j), tilesToPixels(i)));
                             break;
                         case 'K': //クリボ
-                            gameManager.addGameObject(new Kuribo(tilesToPixels(j),tilesToPixels(i)));
-                    }
+                            gameManager.addMovableGameObject(new Kuribo(tilesToPixels(j),tilesToPixels(i)));                    }
                 }
             }
         } catch (Exception e) {

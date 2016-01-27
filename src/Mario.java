@@ -37,7 +37,7 @@ public class Mario extends MovableGameObject {
         vx = 0;
     }
 
-    private void jump() {
+    public void jump() {
         if (onGround) {
             onGround = false;
             vy = JUMP_SPEED;

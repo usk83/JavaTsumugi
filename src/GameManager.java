@@ -111,7 +111,6 @@ public class GameManager {
         Iterator iterator = gameObjects.iterator();
         while (iterator.hasNext()) {
             GameObject go = (GameObject)iterator.next();
-
             // マリオと接触してたら
             if (mario.isCollision(go)) {
                 // コインだったら削除する
@@ -123,6 +122,25 @@ public class GameManager {
                  }
              }
          }
+         iterator =  movableGameObjects.iterator();
+         while (iterator.hasNext()) {
+             MovableGameObject go = (MovableGameObject)iterator.next();
+             // マリオと接触してたら
+             if (mario.isCollision(go)) {
+                 //クリボだったら死ぬ
+                 if (go instanceof Kuribo) {
+                     Kuribo kuribo = (Kuribo)go;
+                     // 上から踏まれたら
+                     if ((int)mario.getPy() < (int)kuribo.getPy()) {
+                     movableGameObjects.remove(kuribo); // kuribo削除
+                     mario.jump(); //踏むとmarioジャンプ
+                     break;
+                   } else {
+                      //ここにゲームオーバー機能を入れる
+                     }
+                  }
+              }
+          }
      }
 
     /**
