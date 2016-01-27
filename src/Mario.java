@@ -100,7 +100,7 @@ public class Mario extends MovableGameObject {
             if (!isStop) {
                 iconCount += 1;
                 if (iconCount > 3) {
-                    iconCount = 0;
+                    iconCount = 1;
                 }
             }
         }
