@@ -128,6 +128,7 @@ public class GameManager {
                 //ゴールだったらゴールになる。
                 else if(go instanceof Goal) {
                 	goalSound.play();
+                	bgm.stop();
                 	break;
                 }
              }
