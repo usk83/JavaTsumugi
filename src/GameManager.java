@@ -133,10 +133,12 @@ public class GameManager {
                      // 上から踏まれたら
                      if ((int)mario.getPy() < (int)kuribo.getPy()) {
                      movableGameObjects.remove(kuribo); // kuribo削除
+                     kuribo.playKuriboSound(); //消滅時のサウンド
                      mario.jump(); //踏むとmarioジャンプ
                      break;
                    } else {
-                      //ここにゲームオーバー機能を入れる
+                      System.out.println("Game Over");
+
                      }
                   }
               }

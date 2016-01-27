@@ -12,13 +12,20 @@ import javax.swing.*;
 
 public class Kuribo extends MovableGameObject {
   private static final int SPEED = 4; //スピード
+
+  private AudioClip kuriboSound;
+
   public Kuribo(float _px, float _py) {
     super(_px, _py, "res/enemy/kuribo.png", 3);
-    //iconCount = 1;  //画像の何番面を表示するか
-    //animWait = 50;  //アニメ用スリープ時間
     objDire = Direction.LEFT;
     vx = SPEED * objDire;
+    kuriboSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/Squish.wav"));
   }
+
+  public void playKuriboSound() {
+      kuriboSound.play();
+  }
+
   public void move() {
       super.move();
       if (vx == 0) {
