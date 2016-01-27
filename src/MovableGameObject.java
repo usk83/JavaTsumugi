@@ -9,7 +9,7 @@ public abstract class MovableGameObject extends GameObject {
 
     protected int objDire;
 
-    private GameManager gameManager;
+    protected GameManager gameManager;
 
     public MovableGameObject(float _px, float _py, String _path, int _numOfSprites) {
         super(_px, _py, _path, _numOfSprites);
@@ -66,8 +66,13 @@ public abstract class MovableGameObject extends GameObject {
             else if (vy < 0) {
                 py = Map.tilesToPixels(tile.y + 1);
                 vy = 0;
+                //アタマに当たった時の操作(コインブロック用)
+                headCollision(tile);
             }
         }
+    }
+    
+    protected void headCollision(Point tile){
     }
 
     private void addGravity() {

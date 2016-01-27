@@ -73,11 +73,12 @@ public class GameManager {
 
     public void update() {
         mario.keyAction(keys);
-
+        
+        //CheckColisionを前に持ってきた
+        checkCollision();
         for (int i = 0; i < movableGameObjects.size(); i++) {
             movableGameObjects.get(i).move();
         }
-        checkCollision();
     }
 
     public void render(Graphics g) {
@@ -108,7 +109,7 @@ public class GameManager {
     }
 
     private void checkCollision() {
-        Iterator iterator = gameObjects.iterator();
+        Iterator<GameObject> iterator = gameObjects.iterator();
         while (iterator.hasNext()) {
             GameObject go = (GameObject)iterator.next();
             // マリオと接触してたら
@@ -122,9 +123,9 @@ public class GameManager {
                  }
              }
          }
-         iterator =  movableGameObjects.iterator();
-         while (iterator.hasNext()) {
-             MovableGameObject go = (MovableGameObject)iterator.next();
+         Iterator<MovableGameObject> iteratorM = movableGameObjects.iterator();
+         while (iteratorM.hasNext()) {
+             MovableGameObject go = (MovableGameObject)iteratorM.next();
              // マリオと接触してたら
              if (mario.isCollision(go)) {
                  //クリボだったら死ぬ
@@ -138,12 +139,27 @@ public class GameManager {
                      break;
                    } else {
                       System.out.println("Game Over");
-
                      }
                   }
               }
           }
      }
+    
+    public void checkCoinBlock(Point tile) {
+    	Iterator<GameObject> iterator = gameObjects.iterator();
+         while (iterator.hasNext()) {
+             GameObject go = (GameObject)iterator.next();
+             if(go instanceof CoinBlock && !((CoinBlock) go).isKnocked()) {//コインブロックだったら、コインブロックを叩く処理をする。
+            	 if(tile.x == map.pixelsToTiles(go.getPx()) && tile.y == map.pixelsToTiles(go.getPy())) {
+            		 ((CoinBlock) go).knockCoinBlock();
+            	 }
+             }
+             else {
+            	 //頭突きの衝突音
+            	 mario.playBumpSound();
+             }
+         }
+    }
 
     /**
      * キーがタイプされたとき
