@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
+import java.awt.Point;
 import java.io.IOException;
 import java.util.*;
 
@@ -15,6 +16,7 @@ public class Mario extends MovableGameObject {
     private static final int JUMP_SPEED = -18;
 
     private AudioClip jumpSound;
+    private AudioClip bumpSound;
 
     private boolean isStop; // 止まっているか
 
@@ -22,6 +24,7 @@ public class Mario extends MovableGameObject {
         super(_px, _py, "res/mario/mario.png", 14);
 
         jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/Jump.wav"));
+        bumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/Bump.wav"));
         iconCount = 1;
         animWait = 50;
         isStop = true;
@@ -36,7 +39,11 @@ public class Mario extends MovableGameObject {
         }
         vx = 0;
     }
-
+    
+    protected void headCollision(Point tile){
+    	gameManager.checkCoinBlock(tile);
+    }
+    
     public void jump() {
         if (onGround) {
             onGround = false;
@@ -44,6 +51,11 @@ public class Mario extends MovableGameObject {
             iconCount = 5;
             jumpSound.play();
         }
+    }
+    
+    public void playBumpSound() {
+    	jumpSound.stop();
+    	bumpSound.play();
     }
 
     public void keyAction(HashMap<Integer, Integer> keys) {
