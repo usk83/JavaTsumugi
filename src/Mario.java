@@ -53,6 +53,11 @@ public class Mario extends MovableGameObject {
         }
     }
     
+    public void reflectJump() {
+        vy = JUMP_SPEED/2;
+        iconCount = 5;
+    }
+    
     public void playBumpSound() {
     	jumpSound.stop();
     	bumpSound.play();
