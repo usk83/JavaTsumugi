@@ -99,6 +99,11 @@ public class EditorManager {
         String fileName;
         PrintWriter newMap;
 
+        if (!validateMario()) {
+            JOptionPane.showMessageDialog(frame, "マリオの数が不正です");
+            return;
+        }
+
         SaveDialog dialog = new SaveDialog(frame, loadedMapName, mapGravity);
         dialog.setVisible(true);
 
@@ -165,6 +170,23 @@ public class EditorManager {
                 }
             }
         }
+    }
+
+    public boolean validateMario() {
+        int marioCount = 0;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (map[i][j] == 'm') {
+                    marioCount++;
+                }
+            }
+        }
+
+        if (marioCount == 1) {
+            return true;
+        }
+
+        return false;
     }
 
     public void mouseClicked(MouseEvent e) {
