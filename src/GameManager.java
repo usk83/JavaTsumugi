@@ -5,9 +5,15 @@ import java.io.IOException;
 import java.util.*;
 import java.applet.*;
 
+import javax.swing.JOptionPane;
+
 import javax.sound.sampled.*;
 
+import static java.lang.System.exit;
+
 public class GameManager {
+
+    private JavaMario frame;
 
     private static final GameManager instance = new GameManager();
 
@@ -29,6 +35,9 @@ public class GameManager {
     private GameManager() {
         gameObjects = new ArrayList<>();
         movableGameObjects= new ArrayList<>();
+
+        //フレームを持たせる。(ダイアログ用)
+        frame = JavaMario.getInstance();
 
         // キーは押していない状態
         keys = new HashMap<Integer, Integer>(3);
@@ -132,9 +141,7 @@ public class GameManager {
                  }
                 //ゴールかつisGoalがfalseの場合、ゴールになる。
                 else if (go instanceof Goal && !isGoal ) {
-                    isGoal = true;
-                    goalSound.play();
-                    bgm.stop();
+                    clear();
                     break;
                 }
              }
@@ -176,6 +183,25 @@ public class GameManager {
             }
         }
     }
+
+    //クリア時に呼び出される関数
+
+    public void clear(){
+        isGoal = true;
+        goalSound.play();
+        bgm.stop();
+
+        try{
+            Thread.sleep(3000);
+            JOptionPane.showMessageDialog(frame,
+                    "クリアしたよ");
+            exit(0);
+        }catch (InterruptedException e){
+            System.out.println("出来なかった");
+        }
+
+    }
+    
 
     /**
      * キーがタイプされたとき
