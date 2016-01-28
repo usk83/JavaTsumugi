@@ -27,7 +27,7 @@ public class GameManager {
     private AudioClip goalSound;
     private AudioClip deathSound;
 
-    private boolean isGoal;
+    private boolean isGamecleared;
     private boolean isGameovered;
 
     //Dialog系Threadを回すための変数。
@@ -59,8 +59,8 @@ public class GameManager {
     }
 
     public void init(String mapFileName) {
-        //isGoal,isGameoveredを初期化
-        isGoal = false;
+        //isGamecleared,isGameoveredを初期化
+        isGamecleared = false;
         isGameovered = false;
 
         //DialogThreadを回すためのwaitTimeを初期化
@@ -159,8 +159,8 @@ public class GameManager {
                     gameObjects.remove(coin); // 削除
                     break;
                  }
-                //ゴールがisGoalがfalseの場合、ゴールになる。
-                else if (go instanceof Goal && !isGoal && !isGameovered) {
+                //ゴールがisGameclearedがfalseの場合、ゴールになる。
+                else if (go instanceof Goal && !isGamecleared && !isGameovered) {
                     gameClear();
                     break;
                 }
@@ -180,7 +180,7 @@ public class GameManager {
                         kuribo.playKuriboSound(); //消滅時のサウンド
                         mario.reflectJump(); //踏むとmarioジャンプ
                         break;
-                    } else if (!isGameovered && !isGoal){//上以外から接触して且つisGameorveredがfalseなら(二重死亡防止)
+                    } else if (!isGameovered && !isGamecleared){//上以外から接触して且つisGameorveredがfalse(二重死亡防止)、且つisGameclearedがfalseなら
                         gameOver();
                         break;
                     }
@@ -231,7 +231,7 @@ public class GameManager {
                     JOptionPane.showMessageDialog(frame, "ゲームオーバー！終了します。");
                     exit(0);
                 }
-                if(isGoal) {
+                if(isGamecleared) {
                     JOptionPane.showMessageDialog(frame, "ゲームクリア！終了します。");
                     exit(0);
                 }
@@ -240,7 +240,7 @@ public class GameManager {
                         isGameovered = true;
                     }
                     if(waitTime == GAMECLEAR_TIME){
-                        isGoal = true;
+                        isGamecleared = true;
                     }
                     this.sleep(waitTime);
                 }
@@ -262,7 +262,7 @@ public class GameManager {
      */
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if(isGoal||isGameovered){//ゴールまたはゲームオーバーしたらキー操作を無効にする。
+        if(isGamecleared||isGameovered){//ゴールまたはゲームオーバーしたらキー操作を無効にする。
             keys.replace(key, KeyStatus.RELEASED);
             return;
         }
