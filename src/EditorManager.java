@@ -22,12 +22,14 @@ public class EditorManager {
 
     private char[][] map;
     private float mapGravity;
+    private String loadedMapName;
     private int row;
     private int col;
 
     private EditorManager() {
         frame = JavaMario.getInstance();
         mapGravity = 0;
+        loadedMapName = "";
     }
 
     public static EditorManager getInstance() {
@@ -71,7 +73,6 @@ public class EditorManager {
                     map[i][j] = (char)loadMap.read();
                 }
                 loadMap.read(); // 改行文字
-                loadMap.read(); // 改行文字
             }
             loadMap.close();
         }
@@ -80,13 +81,14 @@ public class EditorManager {
                         "エラー");
             return;
         }
+        loadedMapName = loadMapName;
     }
 
     public void saveMap() {
         String fileName;
         PrintWriter newMap;
 
-        SaveDialog dialog = new SaveDialog(frame, mapGravity);
+        SaveDialog dialog = new SaveDialog(frame, loadedMapName, mapGravity);
         dialog.setVisible(true);
 
         if (!dialog.isSavePressed()) {
@@ -119,7 +121,9 @@ public class EditorManager {
         }
         newMap.close();
 
-        System.out.println("保存しました");
+        JOptionPane.showMessageDialog(frame,
+                                        "保存しました。");
+        System.exit(0);
     }
 
     public void update() {
@@ -133,6 +137,9 @@ public class EditorManager {
                 }
                 else if (map[i][j] == 'B') {
                     g.setColor(Color.ORANGE);
+                }
+                else {
+                    g.setColor(Color.WHITE);
                 }
                 g.fillRect(j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, EditorPanel.TILE_SIZE, EditorPanel.TILE_SIZE);
             }

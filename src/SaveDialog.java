@@ -17,16 +17,26 @@ public class SaveDialog extends JDialog implements ActionListener {
     private String fileName;
     private float mapGravity;
 
+    private String loadedFileName;
+    private boolean isReedit;
+
     private boolean isSavePressed;
 
-    public SaveDialog(JFrame owner, float gravity) {
+    public SaveDialog(JFrame owner, String _loadedFileName, float gravity) {
         super(owner, "マップの保存", true);
 
         fileName = "";
         mapGravity = 1.0f;
+        loadedFileName = "";
+        isReedit = false;
         isSavePressed = false;
 
         fileNameField = new JTextField(10);
+        if (!_loadedFileName.equals("")) {
+            loadedFileName = _loadedFileName;
+            isReedit = true;
+            fileNameField.setText(loadedFileName);
+        }
         gravityField = new JTextField(2);
         if (gravity != 0.0) {
             gravityField.setText(String.valueOf(gravity));
@@ -61,23 +71,24 @@ public class SaveDialog extends JDialog implements ActionListener {
         if (e.getSource() == saveButton) {
             try {
                 fileName = fileNameField.getText();
-
                 URI uri = new URI(getClass().getClassLoader().getResource("res/map").toString());
                 File[] files = new File(uri).listFiles();
 
-                for (int i = 0; i < files.length; i++) {
-                    File file = files[i];
-                    if (file.isFile()) {
-                        String fileFullName = file.getName();
-                        String existingFileName = "";
-                        int point = fileFullName.lastIndexOf(".");
-                        if (point != -1) {
-                            existingFileName = fileFullName.substring(0, point);
-                        }
-                        if (fileName.equals(existingFileName)) {
-                            JOptionPane.showMessageDialog(SaveDialog.this,
-                                    "マップがすでに存在します");
-                            return;
+                if (!isReedit || !fileName.equals(loadedFileName)) {
+                    for (int i = 0; i < files.length; i++) {
+                        File file = files[i];
+                        if (file.isFile()) {
+                            String fileFullName = file.getName();
+                            String existingFileName = "";
+                            int point = fileFullName.lastIndexOf(".");
+                            if (point != -1) {
+                                existingFileName = fileFullName.substring(0, point);
+                            }
+                            if (fileName.equals(existingFileName)) {
+                                JOptionPane.showMessageDialog(SaveDialog.this,
+                                        "マップがすでに存在します");
+                                return;
+                            }
                         }
                     }
                 }
