@@ -2,6 +2,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.*;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -46,8 +47,13 @@ public class JavaMario extends JFrame implements KeyListener {
     }
 
     public void gameStart(String mapFileName) {
-        setJMenuBar(null);
         getContentPane().remove(titlePanel);
+
+        JMenu gameMenu = new GameMenu("メニュー");
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(gameMenu);
+        setJMenuBar(menuBar);
+
         MainPanel mainPanel = new MainPanel(mapFileName);
         getContentPane().add(mainPanel);
         addKeyListener(mainPanel);
@@ -56,6 +62,12 @@ public class JavaMario extends JFrame implements KeyListener {
 
     public void editorStart(int columns) {
         getContentPane().remove(titlePanel);
+
+        JMenu editorMenu = new EditorMenu("メニュー");
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(editorMenu);
+        setJMenuBar(menuBar);
+
         EditorPanel editorPanel = new EditorPanel(columns);
         scrollPane = new JScrollPane(editorPanel);
 
