@@ -27,6 +27,7 @@ public class EditorManager {
 
     private EditorManager() {
         frame = JavaMario.getInstance();
+        mapGravity = 0;
     }
 
     public static EditorManager getInstance() {
@@ -85,7 +86,7 @@ public class EditorManager {
         String fileName;
         PrintWriter newMap;
 
-        SaveDialog dialog = new SaveDialog(frame);
+        SaveDialog dialog = new SaveDialog(frame, mapGravity);
         dialog.setVisible(true);
 
         if (!dialog.isSavePressed()) {

@@ -19,7 +19,7 @@ public class SaveDialog extends JDialog implements ActionListener {
 
     private boolean isSavePressed;
 
-    public SaveDialog(JFrame owner) {
+    public SaveDialog(JFrame owner, float gravity) {
         super(owner, "マップの保存", true);
 
         fileName = "";
@@ -28,6 +28,9 @@ public class SaveDialog extends JDialog implements ActionListener {
 
         fileNameField = new JTextField(10);
         gravityField = new JTextField(2);
+        if (gravity != 0.0) {
+            gravityField.setText(String.valueOf(gravity));
+        }
         saveButton = new JButton("保存");
         cancelButton = new JButton("ｷｬﾝｾﾙ");
         saveButton.addActionListener(this);
