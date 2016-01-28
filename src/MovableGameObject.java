@@ -71,7 +71,7 @@ public abstract class MovableGameObject extends GameObject {
             }
         }
     }
-    
+
     protected void headCollision(Point tile){
     }
 

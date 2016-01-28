@@ -39,11 +39,11 @@ public class Mario extends MovableGameObject {
         }
         vx = 0;
     }
-    
+
     protected void headCollision(Point tile){
-    	gameManager.checkCoinBlock(tile);
+        gameManager.checkCoinBlock(tile);
     }
-    
+
     public void jump() {
         if (onGround) {
             onGround = false;
@@ -52,15 +52,15 @@ public class Mario extends MovableGameObject {
             jumpSound.play();
         }
     }
-    
+
     public void reflectJump() {
         vy = JUMP_SPEED/2;
         iconCount = 5;
     }
-    
+
     public void playBumpSound() {
-    	jumpSound.stop();
-    	bumpSound.play();
+        jumpSound.stop();
+        bumpSound.play();
     }
 
     public void keyAction(HashMap<Integer, Integer> keys) {
@@ -90,9 +90,9 @@ public class Mario extends MovableGameObject {
         Rectangle marioRect = new Rectangle((int)px, (int)py,
                                              width, height);
         Rectangle goRect = new Rectangle((int)go.getPx(),
-                                             (int)go.getPy(),
-                                             go.getWidth(),
-                                             go.getHeight());
+                                         (int)go.getPy(),
+                                              go.getWidth(),
+                                              go.getHeight());
         // マリオの矩形と対象オブジェクトの矩形が重なっているか調べる
         if (marioRect.intersects(goRect)) {
             return true;

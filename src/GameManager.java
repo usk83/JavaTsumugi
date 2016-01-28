@@ -21,7 +21,7 @@ public class GameManager {
 
     private Clip bgm;
     private AudioClip goalSound;
-    
+
     private boolean isGoal;
 
     HashMap<Integer, Integer> keys;
@@ -41,13 +41,9 @@ public class GameManager {
         return instance;
     }
 
-    public void init() {
-        // マリオを追加
-        mario = new Mario(320, 160);
-        movableGameObjects.add(mario);
+    public void init(String mapFileName) {
         //isGoalを初期化
         isGoal = false;
-
         // BGMの読み込み
         try {
             bgm = AudioSystem.getClip();
@@ -64,24 +60,29 @@ public class GameManager {
         }
 
         // マップの読み込み
-        initMap();
+        initMap(mapFileName);
     }
 
-    public void initMap() {
+    public void initMap(String mapFileName) {
         // マップを作成
-        map = new Map("res/map/01.dat");
+        map = new Map("res/map/" + mapFileName);
+    }
+
+    public void setMario(Mario m) {
+        mario = m;
     }
 
     public void addGameObject(GameObject go) {
         gameObjects.add(go);
     }
+
     public void addMovableGameObject(MovableGameObject mgo) {
         movableGameObjects.add(mgo);
     }
 
     public void update() {
         mario.keyAction(keys);
-        
+
         //CheckColisionを前に持ってきた
         checkCollision();
         for (int i = 0; i < movableGameObjects.size(); i++) {
@@ -131,50 +132,49 @@ public class GameManager {
                  }
                 //ゴールかつisGoalがfalseの場合、ゴールになる。
                 else if (go instanceof Goal && !isGoal ) {
-                	isGoal = true;
-                	goalSound.play();
-                	bgm.stop();
-                	break;
+                    isGoal = true;
+                    goalSound.play();
+                    bgm.stop();
+                    break;
                 }
              }
          }
-         Iterator<MovableGameObject> iteratorM = movableGameObjects.iterator();
-         while (iteratorM.hasNext()) {
-             MovableGameObject go = (MovableGameObject)iteratorM.next();
-             // マリオと接触してたら
-             if (mario.isCollision(go)) {
-                 //クリボだったら死ぬ
-                 if (go instanceof Kuribo) {
-                     Kuribo kuribo = (Kuribo)go;
-                     // 上から踏まれたら
-                     if ((int)mario.getPy() < (int)kuribo.getPy()) {
-                     movableGameObjects.remove(kuribo); // kuribo削除
-                     kuribo.playKuriboSound(); //消滅時のサウンド
-                     mario.reflectJump(); //踏むとmarioジャンプ
-                     break;
-                   } else {
-                      System.out.println("Game Over");
-                      break;
-                     }
-                  }
-              }
-          }
-     }
-    
+        Iterator<MovableGameObject> iteratorM = movableGameObjects.iterator();
+        while (iteratorM.hasNext()) {
+            MovableGameObject go = (MovableGameObject)iteratorM.next();
+            // マリオと接触してたら
+            if (mario.isCollision(go)) {
+                //クリボだったら死ぬ
+                if (go instanceof Kuribo) {
+                    Kuribo kuribo = (Kuribo)go;
+                    // 上から踏まれたら
+                    if ((int)mario.getPy() < (int)kuribo.getPy()) {
+                        movableGameObjects.remove(kuribo); // kuribo削除
+                        kuribo.playKuriboSound(); //消滅時のサウンド
+                        mario.reflectJump(); //踏むとmarioジャンプ
+                        break;
+                    } else {
+                        System.out.println("Game Over");
+                    }
+                }
+            }
+        }
+    }
+
     public void checkCoinBlock(Point tile) {
-    	Iterator<GameObject> iterator = gameObjects.iterator();
-         while (iterator.hasNext()) {
-             GameObject go = (GameObject)iterator.next();
-             if(go instanceof CoinBlock && !((CoinBlock) go).isKnocked()) {//コインブロックだったら、コインブロックを叩く処理をする。
-            	 if(tile.x == map.pixelsToTiles(go.getPx()) && tile.y == map.pixelsToTiles(go.getPy())) {
-            		 ((CoinBlock) go).knockCoinBlock();
-            	 }
-             }
-             else {
-            	 //頭突きの衝突音
-            	 mario.playBumpSound();
-             }
-         }
+        Iterator<GameObject> iterator = gameObjects.iterator();
+        while (iterator.hasNext()) {
+            GameObject go = (GameObject)iterator.next();
+            if(go instanceof CoinBlock && !((CoinBlock) go).isKnocked()) {//コインブロックだったら、コインブロックを叩く処理をする。
+                if(tile.x == map.pixelsToTiles(go.getPx()) && tile.y == map.pixelsToTiles(go.getPy())) {
+                    ((CoinBlock) go).knockCoinBlock();
+                }
+            }
+            else {
+                //頭突きの衝突音
+                mario.playBumpSound();
+            }
+        }
     }
 
     /**
@@ -189,8 +189,8 @@ public class GameManager {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if(isGoal){
-        	keys.replace(key, KeyStatus.RELEASED);
-        	return;
+            keys.replace(key, KeyStatus.RELEASED);
+            return;
         }
         if (keys.get(key) == null) {
             return;
@@ -214,7 +214,6 @@ public class GameManager {
      * キーが離されたとき
      */
     public void keyReleased(KeyEvent e) {
-    	
         keys.replace(e.getKeyCode(), KeyStatus.RELEASED);
     }
 }

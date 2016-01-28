@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import java.lang.System;
+
 public class Map {
     private GameManager gameManager;
 
@@ -23,6 +25,8 @@ public class Map {
      * マップをロードする
      */
     private void loadMap(String mapPath) {
+        int marioCount = 0;
+
         try {
             // ファイルを開く
             BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -52,6 +56,14 @@ public class Map {
                     map[i][j] = line.charAt(j);
                     // マップデータにしたがってオブジェクトの配置
                     switch (map[i][j]) {
+                        case 'm': // マリオ
+                            if (marioCount == 0) {
+                                marioCount++;
+                                Mario mario = new Mario(tilesToPixels(j), tilesToPixels(i));
+                                gameManager.setMario(mario);
+                                gameManager.addMovableGameObject(mario);
+                            }
+                            break;
                         case 'B': // ブロック
                             gameManager.addGameObject(new Block(tilesToPixels(j), tilesToPixels(i)));
                             break;
@@ -70,6 +82,10 @@ public class Map {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (marioCount == 0) {
+            System.out.println("マリオがマップに存在しません");
+            System.exit(-1);
         }
     }
 
