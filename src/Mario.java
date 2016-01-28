@@ -19,6 +19,8 @@ public class Mario extends MovableGameObject {
     private AudioClip bumpSound;
 
     private boolean isStop; // 止まっているか
+    private boolean isGamecleared; //クリアしたかどうか
+    private boolean isGameovered; //死んでるかどうか
 
     public Mario(float _px, float _py) {
         super(_px, _py, "res/mario/mario.png", 14);
@@ -28,10 +30,13 @@ public class Mario extends MovableGameObject {
         iconCount = 1;
         animWait = 50;
         isStop = true;
+
+        //クリア,死亡系変数を初期化
+        isGamecleared = false;
+        isGameovered = false;
     }
 
     public void move() {
-
         super.move();
 
         if (onGround) {
@@ -64,6 +69,11 @@ public class Mario extends MovableGameObject {
     }
 
     public void keyAction(HashMap<Integer, Integer> keys) {
+        //クリアまたはオーバー時には何もしない。
+        if(isGamecleared || isGameovered) {
+            return;
+        }
+
         if (keys.get(KeyEvent.VK_LEFT) <= KeyStatus.PRESSING) {
             vx = -1 * SPEED;
             isForward = false;
@@ -100,7 +110,35 @@ public class Mario extends MovableGameObject {
         return false;
     }
 
+    //ゲームオーバー時に呼び出す関数
+    public void gameOver(){
+        isGameovered = true;
+        iconCount = 8;
+    }
+
+    //ゲームクリア時に呼び出す関数
+    public  void gameClear(){
+        isGamecleared = true;
+        iconCount = 6;
+        animWait = 300;
+    }
+
     protected void runAnimation() {
+        //ゲームオーバー時
+        if (isGameovered){
+            return;
+        }
+        //ゲームクリア時
+        if (isGamecleared){
+            if (iconCount == 7) {
+                iconCount = 6;
+            } else if (iconCount == 6) {
+                iconCount = 7;
+            }
+            return;
+        }
+
+
         if (onGround) {
             if (!isStop) {
                 iconCount += 1;
