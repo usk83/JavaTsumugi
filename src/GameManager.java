@@ -160,7 +160,7 @@ public class GameManager {
                     break;
                  }
                 //ゴールがisGameclearedがfalseの場合、ゴールになる。
-                else if (go instanceof Goal && !isGamecleared && !isGameovered) {
+                else if (go instanceof Goal && !isGamecleared) {
                     gameClear();
                     break;
                 }
@@ -180,7 +180,7 @@ public class GameManager {
                         kuribo.playKuriboSound(); //消滅時のサウンド
                         mario.reflectJump(); //踏むとmarioジャンプ
                         break;
-                    } else if (!isGameovered && !isGamecleared){//上以外から接触して且つisGameorveredがfalse(二重死亡防止)、且つisGameclearedがfalseなら
+                    } else if (!isGameovered){//上以外から接触して且つisGameorveredがfalseなら(二重死亡防止)
                         gameOver();
                         break;
                     }
@@ -207,20 +207,29 @@ public class GameManager {
 
     //クリア時に呼び出される関数
     private void gameClear(){
+        if(isGamecleared){
+            return;
+        }
         System.out.println("Game clear");
         //ゲームclear時のwaitTImeを設定
         waitTime = GAMECLEAR_TIME;
         goalSound.play();
         bgm.stop();
+        //マリオのアニメーション
+        mario.gameClear();
     }
 
     //死亡時に呼び出される関数
-    private void gameOver(){
+    public void gameOver(){
+        if(isGameovered){
+            return;
+        }
         System.out.println("Game Over");
         //ゲームオーバー時のwaitTImeを設定
         waitTime = GAMEOVER_TIME;
         deathSound.play();
         bgm.stop();
+        mario.gameOver();
     }
     //ゲームオーバー時、クリア時にwaitTImeが変化してそれぞれのDialogに突入するスレッド
     public class  DialogThread extends Thread {
