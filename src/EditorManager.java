@@ -117,7 +117,7 @@ public class EditorManager {
             for (int j = 0; j < col; j++) {
                 newMap.print(map[i][j]);
             }
-            newMap.println("");
+            newMap.print("\n");
         }
         newMap.close();
 
