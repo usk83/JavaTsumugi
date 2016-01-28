@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 public class EditorManager {
     private JavaMario frame;
+    private PalettePanel palettePanel;
     private static final EditorManager instance = new EditorManager();
 
     private char[][] map;
@@ -34,6 +35,7 @@ public class EditorManager {
 
     private EditorManager() {
         frame = JavaMario.getInstance();
+        palettePanel = PalettePanel.getInstance();
         mapGravity = 0;
         loadedMapName = "";
         mario = new Mario(0, 0);
@@ -194,9 +196,7 @@ public class EditorManager {
         int y = e.getY() / EditorPanel.TILE_SIZE;
 
         if (x >= 0 && x < col && y >= 0 && y < row) {
-            if (map[y][x] == ' ') {
-                map[y][x] = 'B';
-            }
+            map[y][x] = palettePanel.getSelected();
         }
     }
 
@@ -205,9 +205,7 @@ public class EditorManager {
         int y = e.getY() / EditorPanel.TILE_SIZE;
 
         if (x >= 0 && x < col && y >= 0 && y < row) {
-            if (map[y][x] == ' ') {
-                map[y][x] = 'B';
-            }
+            map[y][x] = palettePanel.getSelected();
         }
     }
 }
