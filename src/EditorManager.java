@@ -26,10 +26,21 @@ public class EditorManager {
     private int row;
     private int col;
 
+    private Mario mario;
+    private Block block;
+    private CoinBlock coinBlock;
+    private Coin coin;
+    private Kuribo kuribo;
+
     private EditorManager() {
         frame = JavaMario.getInstance();
         mapGravity = 0;
         loadedMapName = "";
+        mario = new Mario(0, 0);
+        block = new Block(0, 0);
+        coinBlock = new CoinBlock(0, 0);
+        coin = new Coin(0, 0);
+        kuribo = new Kuribo(0, 0);
     }
 
     public static EditorManager getInstance() {
@@ -130,18 +141,28 @@ public class EditorManager {
     }
 
     public void render(Graphics g) {
+        g.setColor(Color.WHITE);
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if (map[i][j] == ' ') {
-                    g.setColor(Color.WHITE);
+                switch (map[i][j]) {
+                    case 'm':
+                        mario.draw(g, j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, 0);
+                        break;
+                    case 'B':
+                        block.draw(g, j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, 0);
+                        break;
+                    case 'C':
+                        coinBlock.draw(g, j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, 0);
+                        break;
+                    case 'c':
+                        coin.draw(g, j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, 0);
+                        break;
+                    case 'k':
+                        kuribo.draw(g, j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, 0);
+                        break;
+                    default:
+                        g.fillRect(j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, EditorPanel.TILE_SIZE, EditorPanel.TILE_SIZE);
                 }
-                else if (map[i][j] == 'B') {
-                    g.setColor(Color.ORANGE);
-                }
-                else {
-                    g.setColor(Color.WHITE);
-                }
-                g.fillRect(j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, EditorPanel.TILE_SIZE, EditorPanel.TILE_SIZE);
             }
         }
     }
