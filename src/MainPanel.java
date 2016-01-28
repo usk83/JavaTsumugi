@@ -24,11 +24,11 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 
     private Thread gameLoop; // ゲームループ
 
-    public MainPanel() {
+    public MainPanel(String mapFileName) {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         gameManager = GameManager.getInstance();
-        gameManager.init();
+        gameManager.init(mapFileName);
 
         // ゲームループ開始
         gameLoop = new Thread(this);

@@ -41,13 +41,9 @@ public class GameManager {
         return instance;
     }
 
-    public void init() {
-        // マリオを追加
-        mario = new Mario(320, 160);
-        movableGameObjects.add(mario);
+    public void init(String mapFileName) {
         //isGoalを初期化
         isGoal = false;
-
         // BGMの読み込み
         try {
             bgm = AudioSystem.getClip();
@@ -64,17 +60,22 @@ public class GameManager {
         }
 
         // マップの読み込み
-        initMap();
+        initMap(mapFileName);
     }
 
-    public void initMap() {
+    public void initMap(String mapFileName) {
         // マップを作成
-        map = new Map("res/map/01.dat");
+        map = new Map("res/map/" + mapFileName);
+    }
+
+    public void setMario(Mario m) {
+        mario = m;
     }
 
     public void addGameObject(GameObject go) {
         gameObjects.add(go);
     }
+
     public void addMovableGameObject(MovableGameObject mgo) {
         movableGameObjects.add(mgo);
     }
