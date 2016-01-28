@@ -132,10 +132,10 @@ public class GameManager {
                  }
                 //ゴールかつisGoalがfalseの場合、ゴールになる。
                 else if (go instanceof Goal && !isGoal ) {
-                	isGoal = true;
-                	goalSound.play();
-                	bgm.stop();
-                	break;
+                    isGoal = true;
+                    goalSound.play();
+                    bgm.stop();
+                    break;
                 }
              }
          }
@@ -189,8 +189,8 @@ public class GameManager {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if(isGoal){
-        	keys.replace(key, KeyStatus.RELEASED);
-        	return;
+            keys.replace(key, KeyStatus.RELEASED);
+            return;
         }
         if (keys.get(key) == null) {
             return;

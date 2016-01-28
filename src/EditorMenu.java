@@ -17,17 +17,17 @@ public class EditorMenu extends JMenu {
         save.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                        editorManager.saveMap();
-                    }
+                    editorManager.saveMap();
                 }
+            }
         );
         JMenuItem exit = new JMenuItem("終了");
         exit.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                        System.exit(0);
-                    }
+                    System.exit(0);
                 }
+            }
         );
         this.add(save);
         this.add(exit);
