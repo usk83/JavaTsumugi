@@ -2,22 +2,28 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
-import javax.sound.sampled.*;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class EditorManager {
+    private JavaMario frame;
     private static final EditorManager instance = new EditorManager();
 
     private char[][] map;
     private int row;
     private int col;
 
-    private Clip bgm;
-
     private EditorManager() {
+        frame = JavaMario.getInstance();
     }
 
     public static EditorManager getInstance() {
@@ -27,19 +33,6 @@ public class EditorManager {
     public void init(int r, int c) {
         row = r;
         col = c;
-
-        // BGMの読み込み
-        try {
-            bgm = AudioSystem.getClip();
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("res/sound/bgm/01-main-theme-overworld.wav"));
-            bgm.open(inputStream);
-            bgm.loop(Clip.LOOP_CONTINUOUSLY);
-        }
-        catch (LineUnavailableException |
-               UnsupportedAudioFileException |
-               IOException e) {
-            System.out.println("play sound error: " + e.getMessage());
-        }
 
         initMap(row, col);
     }
@@ -52,6 +45,47 @@ public class EditorManager {
                 map[i][j] = ' ';
             }
         }
+    }
+
+    public void saveMap() {
+        String fileName;
+        float mapGravity;
+        PrintWriter newMap;
+
+        SaveDialog dialog = new SaveDialog(frame);
+        dialog.setVisible(true);
+
+        if (!dialog.isSavePressed()) {
+            return;
+        }
+
+        fileName = dialog.getFileName();
+        mapGravity = dialog.getMapGravity();
+
+        // 保存処理
+        try {
+            File mapFile = new File(new URI(getClass().getClassLoader().getResource("res/map").toString() + "/" + fileName + ".dat"));
+            mapFile.createNewFile();
+            newMap = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));
+        }
+        catch (IOException | URISyntaxException ex) {
+            JOptionPane.showMessageDialog(frame,
+                        "エラー");
+            return;
+        }
+
+        newMap.println(mapGravity);
+        newMap.println(row);
+        newMap.println(col);
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                newMap.print(map[i][j]);
+            }
+            newMap.println("");
+        }
+        newMap.close();
+
+        System.out.println("保存しました");
     }
 
     public void update() {
