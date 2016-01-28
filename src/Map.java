@@ -61,6 +61,9 @@ public class Map {
                         case 'c': // コイン
                             gameManager.addGameObject(new Coin(tilesToPixels(j), tilesToPixels(i)));
                             break;
+                        case 'G': // ゴール
+                            gameManager.addGameObject(new Goal(tilesToPixels(j), tilesToPixels(i)));
+                            break;
                         case 'k': //クリボー
                             gameManager.addMovableGameObject(new Kuribo(tilesToPixels(j),tilesToPixels(i)));                    }
                 }

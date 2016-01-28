@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.*;
+import java.applet.*;
 
 import javax.sound.sampled.*;
 
@@ -19,6 +20,9 @@ public class GameManager {
     private Map map;
 
     private Clip bgm;
+    private AudioClip goalSound;
+    
+    private boolean isGoal;
 
     HashMap<Integer, Integer> keys;
 
@@ -41,10 +45,14 @@ public class GameManager {
         // マリオを追加
         mario = new Mario(320, 160);
         movableGameObjects.add(mario);
+        //isGoalを初期化
+        isGoal = false;
 
         // BGMの読み込み
         try {
             bgm = AudioSystem.getClip();
+            //ゴールサウンドを取り込み。
+            goalSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/bgm/06-level-complete.wav"));
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("res/sound/bgm/01-main-theme-overworld.wav"));
             bgm.open(inputStream);
             bgm.loop(Clip.LOOP_CONTINUOUSLY);
@@ -121,6 +129,13 @@ public class GameManager {
                     gameObjects.remove(coin); // 削除
                     break;
                  }
+                //ゴールかつisGoalがfalseの場合、ゴールになる。
+                else if (go instanceof Goal && !isGoal ) {
+                	isGoal = true;
+                	goalSound.play();
+                	bgm.stop();
+                	break;
+                }
              }
          }
          Iterator<MovableGameObject> iteratorM = movableGameObjects.iterator();
@@ -139,6 +154,7 @@ public class GameManager {
                      break;
                    } else {
                       System.out.println("Game Over");
+                      break;
                      }
                   }
               }
@@ -172,6 +188,10 @@ public class GameManager {
      */
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+        if(isGoal){
+        	keys.replace(key, KeyStatus.RELEASED);
+        	return;
+        }
         if (keys.get(key) == null) {
             return;
         }
@@ -194,6 +214,7 @@ public class GameManager {
      * キーが離されたとき
      */
     public void keyReleased(KeyEvent e) {
+    	
         keys.replace(e.getKeyCode(), KeyStatus.RELEASED);
     }
 }
