@@ -1,8 +1,8 @@
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.GridLayout;
 import java.awt.event.*;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -70,36 +70,55 @@ public class JavaMario extends JFrame implements KeyListener {
     }
 
     public void editorStart(int columns) {
+
+        int adjustOffset = 0;
+
+        EditorPanel editorPanel = new EditorPanel(columns, adjustOffset);
+
+        if (columns > editorPanel.DEFAULT_COL) {
+            adjustOffset = 15;
+            editorPanel = new EditorPanel(columns, adjustOffset);
+        }
+
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
+
         initEditorStart();
-        EditorPanel editorPanel = new EditorPanel(columns);
         scrollPane = new JScrollPane(editorPanel);
 
         getContentPane().add(scrollPane);
 
+        PalettePanel palettePanel = PalettePanel.getInstance();
+        getContentPane().add(palettePanel);
+
         pack();
 
-        if (columns > editorPanel.DEFAULT_COL) {
-            editorPanel.adjustSize();
-            pack();
-        }
-
+        palettePanel.adjustSize();
         editorPanel.setColumns(columns);
     }
 
     public void editorStart(String loadMapName) {
+        int adjustOffset = 0;
+
+        EditorPanel editorPanel = new EditorPanel(loadMapName, adjustOffset);
+
+        if (editorPanel.getCol() > editorPanel.DEFAULT_COL) {
+            adjustOffset = 15;
+            editorPanel = new EditorPanel(loadMapName, adjustOffset);
+        }
+
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
+
         initEditorStart();
-        EditorPanel editorPanel = new EditorPanel(loadMapName);
         scrollPane = new JScrollPane(editorPanel);
 
         getContentPane().add(scrollPane);
 
+        PalettePanel palettePanel = PalettePanel.getInstance();
+        getContentPane().add(palettePanel);
+
         pack();
 
-        if (editorPanel.getCol() > editorPanel.DEFAULT_COL) {
-            editorPanel.adjustSize();
-            pack();
-        }
-
+        palettePanel.adjustSize();
         editorPanel.setColumns(editorPanel.getCol());
     }
 

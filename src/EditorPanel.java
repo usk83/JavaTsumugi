@@ -34,14 +34,14 @@ public class EditorPanel extends JPanel implements Runnable, MouseListener, Mous
 
     private Thread gameLoop; // ゲームループ
 
-    public EditorPanel(int _col) {
+    public EditorPanel(int _col, int adjustOffset) {
         col = _col;
-        init();
+        init(adjustOffset);
 
         editorManager.init(ROW, col);
     }
 
-    public EditorPanel(String loadMapName) {
+    public EditorPanel(String loadMapName, int adjustOffset) {
         BufferedReader loadMap;
 
         try {
@@ -64,7 +64,7 @@ public class EditorPanel extends JPanel implements Runnable, MouseListener, Mous
             return;
         }
 
-        init();
+        init(adjustOffset);
 
         editorManager.init(ROW, col);
         frame.pack();
@@ -72,9 +72,9 @@ public class EditorPanel extends JPanel implements Runnable, MouseListener, Mous
         editorManager.loadMap(loadMapName);
     }
 
-    private void init() {
+    private void init(int adjustOffset) {
         frame = JavaMario.getInstance();
-        setPreferredSize(new Dimension(DEFAULT_COL * TILE_SIZE, ROW * TILE_SIZE));
+        setPreferredSize(new Dimension(DEFAULT_COL * TILE_SIZE, ROW * TILE_SIZE + adjustOffset));
         width = col * TILE_SIZE;
         height = ROW * TILE_SIZE;
 
@@ -87,10 +87,6 @@ public class EditorPanel extends JPanel implements Runnable, MouseListener, Mous
         setFocusable(true);
         addMouseListener(this);
         addMouseMotionListener(this);
-    }
-
-    public void adjustSize() {
-        setPreferredSize(new Dimension(DEFAULT_COL * TILE_SIZE, ROW *TILE_SIZE + 15));
     }
 
     public void setColumns(int c) {
