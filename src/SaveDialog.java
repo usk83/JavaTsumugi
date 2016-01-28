@@ -85,8 +85,7 @@ public class SaveDialog extends JDialog implements ActionListener {
                                 existingFileName = fileFullName.substring(0, point);
                             }
                             if (fileName.equals(existingFileName)) {
-                                JOptionPane.showMessageDialog(SaveDialog.this,
-                                        "マップがすでに存在します");
+                                JOptionPane.showMessageDialog(SaveDialog.this, "マップがすでに存在します");
                                 return;
                             }
                         }
@@ -96,14 +95,12 @@ public class SaveDialog extends JDialog implements ActionListener {
                 mapGravity = Float.parseFloat(gravityField.getText());
 
                 if (mapGravity < 0.2 || mapGravity > 5.0) {
-                    JOptionPane.showMessageDialog(SaveDialog.this,
-                            "重力が有効な値ではありません");
+                    JOptionPane.showMessageDialog(SaveDialog.this, "重力が有効な値ではありません");
                     return;
                 }
             }
             catch (NumberFormatException nfex) {
-                JOptionPane.showMessageDialog(SaveDialog.this,
-                        "重力は数値で入力してください");
+                JOptionPane.showMessageDialog(SaveDialog.this, "重力は数値で入力してください");
                 gravityField.setText("");
                 return;
             }
