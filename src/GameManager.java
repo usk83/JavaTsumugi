@@ -4,11 +4,9 @@ import java.awt.Point;
 import java.io.IOException;
 import java.util.*;
 import java.applet.*;
-
-
-
 import javax.sound.sampled.*;
-
+import javax.swing.*;
+import static java.lang.System.exit;
 
 
 public class GameManager {
@@ -27,8 +25,18 @@ public class GameManager {
 
     private Clip bgm;
     private AudioClip goalSound;
+    private AudioClip deathSound;
 
     private boolean isGoal;
+    private boolean isGameovered;
+
+    //Dialog系Threadを回すための変数。
+    private int waitTime;
+    private final int GAMEOVER_TIME = 3000;
+    private final int GAMECLEAR_TIME = 6000;
+
+    //ゲームオーバー,クリアのDialog用Thread
+    private DialogThread dialogThread;
 
     HashMap<Integer, Integer> keys;
 
@@ -51,13 +59,25 @@ public class GameManager {
     }
 
     public void init(String mapFileName) {
-        //isGoalを初期化
+        //isGoal,isGameoveredを初期化
         isGoal = false;
+        isGameovered = false;
+
+        //DialogThreadを回すためのwaitTimeを初期化
+        waitTime = 200;
+
+        //DialogThreadをスタート。
+        dialogThread = new DialogThread();
+        dialogThread.start();
+
         // BGMの読み込み
         try {
             bgm = AudioSystem.getClip();
             //ゴールサウンドを取り込み。
             goalSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/bgm/06-level-complete.wav"));
+            //ゲームオーバー用のサウンドを取り込み。
+            deathSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/bgm/08-you're-dead.wav"));
+
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("res/sound/bgm/01-main-theme-overworld.wav"));
             bgm.open(inputStream);
             bgm.loop(Clip.LOOP_CONTINUOUSLY);
@@ -139,11 +159,9 @@ public class GameManager {
                     gameObjects.remove(coin); // 削除
                     break;
                  }
-                //ゴールかつisGoalがfalseの場合、ゴールになる。
-                else if (go instanceof Goal && !isGoal ) {
-                    Goal goal = (Goal)go;
-                    clearSound();
-                    goal.clear();
+                //ゴールがisGoalがfalseの場合、ゴールになる。
+                else if (go instanceof Goal && !isGoal && !isGameovered) {
+                    gameClear();
                     break;
                 }
              }
@@ -162,8 +180,9 @@ public class GameManager {
                         kuribo.playKuriboSound(); //消滅時のサウンド
                         mario.reflectJump(); //踏むとmarioジャンプ
                         break;
-                    } else {
-                        System.out.println("Game Over");
+                    } else if (!isGameovered && !isGoal){//上以外から接触して且つisGameorveredがfalseなら(二重死亡防止)
+                        gameOver();
+                        break;
                     }
                 }
             }
@@ -187,15 +206,50 @@ public class GameManager {
     }
 
     //クリア時に呼び出される関数
-
-    public void clearSound(){
-        isGoal = true;
+    private void gameClear(){
+        System.out.println("Game clear");
+        //ゲームclear時のwaitTImeを設定
+        waitTime = GAMECLEAR_TIME;
         goalSound.play();
         bgm.stop();
-
     }
-    //BGMを流した後にダイアログを出すようのスッドレ
 
+    //死亡時に呼び出される関数
+    private void gameOver(){
+        System.out.println("Game Over");
+        //ゲームオーバー時のwaitTImeを設定
+        waitTime = GAMEOVER_TIME;
+        deathSound.play();
+        bgm.stop();
+    }
+    //ゲームオーバー時、クリア時にwaitTImeが変化してそれぞれのDialogに突入するスレッド
+    public class  DialogThread extends Thread {
+
+        public void run() {
+            while(true) {
+                if(isGameovered) {
+                    JOptionPane.showMessageDialog(frame, "ゲームオーバー！終了します。");
+                    exit(0);
+                }
+                if(isGoal) {
+                    JOptionPane.showMessageDialog(frame, "ゲームクリア！終了します。");
+                    exit(0);
+                }
+                try {
+                    if(waitTime == GAMEOVER_TIME){
+                        isGameovered = true;
+                    }
+                    if(waitTime == GAMECLEAR_TIME){
+                        isGoal = true;
+                    }
+                    this.sleep(waitTime);
+                }
+                catch (InterruptedException e){
+                    System.out.println(" dialogThread err!");
+                }
+            }
+        }
+    }
 
     /**
      * キーがタイプされたとき
@@ -208,7 +262,7 @@ public class GameManager {
      */
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if(isGoal){
+        if(isGoal||isGameovered){//ゴールまたはゲームオーバーしたらキー操作を無効にする。
             keys.replace(key, KeyStatus.RELEASED);
             return;
         }
