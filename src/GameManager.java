@@ -189,6 +189,7 @@ public class GameManager {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if(isGoal){
+        	keys.replace(key, KeyStatus.RELEASED);
         	return;
         }
         if (keys.get(key) == null) {
@@ -213,6 +214,7 @@ public class GameManager {
      * キーが離されたとき
      */
     public void keyReleased(KeyEvent e) {
+    	
         keys.replace(e.getKeyCode(), KeyStatus.RELEASED);
     }
 }
