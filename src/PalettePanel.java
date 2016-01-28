@@ -20,6 +20,7 @@ public class PalettePanel extends JPanel implements MouseListener {
     private CoinBlock coinBlock;
     private Coin coin;
     private Kuribo kuribo;
+    private Goal goal;
 
     private int selectedNo;
 
@@ -33,6 +34,7 @@ public class PalettePanel extends JPanel implements MouseListener {
         coinBlock = new CoinBlock(0, 0);
         coin = new Coin(0, 0);
         kuribo = new Kuribo(0, 0);
+        goal = new Goal(0, 0);
 
         selectedNo = 0;
         addMouseListener(this);
@@ -55,8 +57,9 @@ public class PalettePanel extends JPanel implements MouseListener {
         coinBlock.draw(g, 0 * TILE_SIZE, 2 * TILE_SIZE, 0);
         coin.draw(g, 0 * TILE_SIZE, 3 * TILE_SIZE, 0);
         kuribo.draw(g, 0 * TILE_SIZE, 4 * TILE_SIZE, 0);
+        goal.draw(g, 0 * TILE_SIZE, 5 * TILE_SIZE, 0);
         g.setColor(Color.WHITE);
-        g.fillRect(0 * TILE_SIZE, 5 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        g.fillRect(0 * TILE_SIZE, 6 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
         g.setColor(Color.RED);
         g.drawRect(0, selectedNo * TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -74,6 +77,8 @@ public class PalettePanel extends JPanel implements MouseListener {
                 return 'c';
             case 4:
                 return 'k';
+            case 5:
+                return 'G';
             default:
                 return ' ';
         }
@@ -88,7 +93,7 @@ public class PalettePanel extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         int clicked = e.getY() / TILE_SIZE;
 
-        if (clicked > 5) {
+        if (clicked > 6) {
             return;
         }
 

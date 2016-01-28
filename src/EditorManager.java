@@ -32,6 +32,7 @@ public class EditorManager {
     private CoinBlock coinBlock;
     private Coin coin;
     private Kuribo kuribo;
+    private Goal goal;
 
     private EditorManager() {
         frame = JavaMario.getInstance();
@@ -43,6 +44,7 @@ public class EditorManager {
         coinBlock = new CoinBlock(0, 0);
         coin = new Coin(0, 0);
         kuribo = new Kuribo(0, 0);
+        goal = new Goal(0, 0);
     }
 
     public static EditorManager getInstance() {
@@ -101,8 +103,14 @@ public class EditorManager {
         String fileName;
         PrintWriter newMap;
 
-        if (!validateMario()) {
+
+        int validate = validateMap();
+        if (validate == 1) {
             JOptionPane.showMessageDialog(frame, "マリオの数が不正です");
+            return;
+        }
+        else if (validate == 2) {
+            JOptionPane.showMessageDialog(frame, "ゴールの数が不正です");
             return;
         }
 
@@ -167,6 +175,9 @@ public class EditorManager {
                     case 'k':
                         kuribo.draw(g, j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, 0);
                         break;
+                    case 'G':
+                        goal.draw(g, j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, 0);
+                        break;
                     default:
                         g.fillRect(j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, EditorPanel.TILE_SIZE, EditorPanel.TILE_SIZE);
                 }
@@ -174,21 +185,28 @@ public class EditorManager {
         }
     }
 
-    public boolean validateMario() {
+    public int validateMap() {
         int marioCount = 0;
+        int goalCount = 0;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if (map[i][j] == 'm') {
                     marioCount++;
                 }
+                else if (map[i][j] == 'G') {
+                    goalCount++;
+                }
             }
         }
 
-        if (marioCount == 1) {
-            return true;
+        if (marioCount != 1) {
+            return 1;
+        }
+        else if (goalCount != 1) {
+            return 2;
         }
 
-        return false;
+        return 0;
     }
 
     public void mouseClicked(MouseEvent e) {
