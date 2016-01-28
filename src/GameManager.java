@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.*;
 import java.applet.*;
 
-import javax.swing.JOptionPane;
+
 
 import javax.sound.sampled.*;
 
-import static java.lang.System.exit;
+
 
 public class GameManager {
 
@@ -141,7 +141,9 @@ public class GameManager {
                  }
                 //ゴールかつisGoalがfalseの場合、ゴールになる。
                 else if (go instanceof Goal && !isGoal ) {
-                    clear();
+                    Goal goal = (Goal)go;
+                    clearSound();
+                    goal.clear();
                     break;
                 }
              }
@@ -186,22 +188,14 @@ public class GameManager {
 
     //クリア時に呼び出される関数
 
-    public void clear(){
+    public void clearSound(){
         isGoal = true;
         goalSound.play();
         bgm.stop();
 
-        try{
-            Thread.sleep(3000);
-            JOptionPane.showMessageDialog(frame,
-                    "クリアしたよ");
-            exit(0);
-        }catch (InterruptedException e){
-            System.out.println("出来なかった");
-        }
-
     }
-    
+    //BGMを流した後にダイアログを出すようのスッドレ
+
 
     /**
      * キーがタイプされたとき
