@@ -41,6 +41,15 @@ public abstract class GameObject {
                     null);
     }
 
+    public void draw(Graphics g, int x, int y, int iconCount) {
+        g.drawImage(icon,
+                    x, y,
+                    x + width, y + height,
+                    iconCount * imgWidth + xs, 0,
+                    iconCount * imgWidth + xe, imgHeight,
+                    null);
+    }
+
     protected void loadImage(String path) {
         ImageIcon ii = new ImageIcon(getClass().getClassLoader().getResource(path));
         icon = ii.getImage();
