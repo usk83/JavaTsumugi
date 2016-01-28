@@ -17,21 +17,17 @@ public class EditorManager {
 
     private Clip bgm;
 
-    HashMap<Integer, Integer> keys;
-
     private EditorManager() {
-        // キーは押していない状態
-        keys = new HashMap<Integer, Integer>(3);
-        keys.put(KeyEvent.VK_LEFT, KeyStatus.RELEASED);
-        keys.put(KeyEvent.VK_RIGHT, KeyStatus.RELEASED);
-        keys.put(KeyEvent.VK_SPACE, KeyStatus.RELEASED);
     }
 
     public static EditorManager getInstance() {
         return instance;
     }
 
-    public void init() {
+    public void init(int r, int c) {
+        row = r;
+        col = c;
+
         // BGMの読み込み
         try {
             bgm = AudioSystem.getClip();
@@ -45,8 +41,6 @@ public class EditorManager {
             System.out.println("play sound error: " + e.getMessage());
         }
 
-        row = EditorPanel.HEIGHT/EditorPanel.TILE_SIZE;
-        col = 30;
         initMap(row, col);
     }
 
@@ -77,58 +71,15 @@ public class EditorManager {
         }
     }
 
-    /**
-     * キーがタイプされたとき
-     */
-    public void keyTyped(KeyEvent e) {
-    }
-
-    /**
-     * キーが押されたとき
-     */
-    public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-        if (keys.get(key) == null) {
-            return;
-        }
-        if (keys.get(key) == KeyStatus.RELEASED) {
-            keys.replace(key, KeyStatus.PRESSED);
-        }
-        else {
-            keys.replace(key, KeyStatus.PRESSING);
-        }
-
-        if (key == KeyEvent.VK_LEFT) {
-            keys.put(KeyEvent.VK_RIGHT, KeyStatus.RELEASED);
-        }
-        else if (key == KeyEvent.VK_LEFT) {
-            keys.put(KeyEvent.VK_LEFT, KeyStatus.RELEASED);
-        }
-    }
-
-    /**
-     * キーが離されたとき
-     */
-    public void keyReleased(KeyEvent e) {
-        keys.replace(e.getKeyCode(), KeyStatus.RELEASED);
-    }
-
     public void mouseClicked(MouseEvent e) {
         int x = e.getX() / EditorPanel.TILE_SIZE;
         int y = e.getY() / EditorPanel.TILE_SIZE;
 
         if (x >= 0 && x < col && y >= 0 && y < row) {
             if (map[y][x] == ' ') {
-                System.out.println("ブロック");
                 map[y][x] = 'B';
             }
         }
-    }
-
-    public void mousePressed(MouseEvent e) {
-    }
-
-    public void mouseReleased(MouseEvent e) {
     }
 
     public void mouseDragged(MouseEvent e) {
@@ -137,7 +88,6 @@ public class EditorManager {
 
         if (x >= 0 && x < col && y >= 0 && y < row) {
             if (map[y][x] == ' ') {
-                System.out.println("ブロック");
                 map[y][x] = 'B';
             }
         }

@@ -8,10 +8,12 @@ import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
-public class EditorPanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 480;
+public class EditorPanel extends JPanel implements Runnable, MouseListener, MouseMotionListener {
+    public static final int ROW = 15;
+    public static final int DEFAULT_COL = 25;
     public static final int TILE_SIZE = 32;
+    private int width;
+    private int height;
 
     private EditorManager editorManager;
 
@@ -21,20 +23,30 @@ public class EditorPanel extends JPanel implements Runnable, KeyListener, MouseL
 
     private Thread gameLoop; // ゲームループ
 
-    public EditorPanel() {
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+    public EditorPanel(int col) {
+        setPreferredSize(new Dimension(DEFAULT_COL * TILE_SIZE, ROW * TILE_SIZE));
+        width = DEFAULT_COL * TILE_SIZE;
+        height = ROW * TILE_SIZE;
 
         editorManager = EditorManager.getInstance();
-        editorManager.init();
+        editorManager.init(ROW, col);
 
         // ゲームループ開始
         gameLoop = new Thread(this);
         gameLoop.start();
 
         setFocusable(true);
-        addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
+    }
+
+    public void adjustSize() {
+        setPreferredSize(new Dimension(DEFAULT_COL * TILE_SIZE, ROW *TILE_SIZE + 15));
+    }
+
+    public void setColumns(int c) {
+        width = c * TILE_SIZE;
+        setPreferredSize(new Dimension(c * TILE_SIZE, ROW * TILE_SIZE));
     }
 
     /**
@@ -70,7 +82,7 @@ public class EditorPanel extends JPanel implements Runnable, KeyListener, MouseL
         // 初回の呼び出し時にダブルバッファリング用オブジェクトを作成
         if (dbImage == null) {
             // バッファイメージ
-            dbImage = createImage(WIDTH, HEIGHT);
+            dbImage = createImage(width, height);
 
             if (dbImage == null) {
                 // dbImageが作られるまでは何もしない
@@ -84,7 +96,7 @@ public class EditorPanel extends JPanel implements Runnable, KeyListener, MouseL
 
         // バッファをクリアする
         dbg.setColor(Color.WHITE);
-        dbg.fillRect(0, 0, WIDTH, HEIGHT);
+        dbg.fillRect(0, 0, width, height);
 
         editorManager.render(dbg);
     }
@@ -109,27 +121,6 @@ public class EditorPanel extends JPanel implements Runnable, KeyListener, MouseL
     }
 
     /**
-     * キーがタイプされたとき
-     */
-    public void keyTyped(KeyEvent e) {
-        editorManager.keyTyped(e);
-    }
-
-    /**
-     * キーが押されたとき
-     */
-    public void keyPressed(KeyEvent e) {
-        editorManager.keyPressed(e);
-    }
-
-    /**
-     * キーが離されたとき
-     */
-    public void keyReleased(KeyEvent e) {
-        editorManager.keyReleased(e);
-    }
-
-    /**
      * マウス操作関連
      */
     public void mouseEntered(MouseEvent e){
@@ -143,11 +134,9 @@ public class EditorPanel extends JPanel implements Runnable, KeyListener, MouseL
     }
 
     public void mousePressed(MouseEvent e){
-        editorManager.mousePressed(e);
     }
 
     public void mouseReleased(MouseEvent e){
-        editorManager.mouseReleased(e);
     }
 
     public void mouseDragged(MouseEvent e) {
