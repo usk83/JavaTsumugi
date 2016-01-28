@@ -5,13 +5,24 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class EditorPanel extends JPanel implements Runnable, MouseListener, MouseMotionListener {
+    private JavaMario frame;
+
     public static final int ROW = 15;
     public static final int DEFAULT_COL = 25;
     public static final int TILE_SIZE = 32;
+    private int col;
+
     private int width;
     private int height;
 
@@ -23,13 +34,51 @@ public class EditorPanel extends JPanel implements Runnable, MouseListener, Mous
 
     private Thread gameLoop; // ゲームループ
 
-    public EditorPanel(int col) {
+    public EditorPanel(int _col) {
+        col = _col;
+        init();
+
+        editorManager.init(ROW, col);
+    }
+
+    public EditorPanel(String loadMapName) {
+        BufferedReader loadMap;
+
+        try {
+            File mapFile = new File(new URI(getClass().getClassLoader().getResource("res/map").toString() + "/" + loadMapName + ".dat"));
+            loadMap = new BufferedReader(new FileReader(mapFile));
+        }
+        catch (IOException | URISyntaxException ex) {
+            return;
+        }
+
+        try {
+            loadMap.readLine();
+            loadMap.readLine();
+            col = Integer.parseInt(loadMap.readLine());
+            loadMap.close();
+        }
+        catch (IOException ex) {
+            JOptionPane.showMessageDialog(frame,
+                        "エラー");
+            return;
+        }
+
+        init();
+
+        editorManager.init(ROW, col);
+        frame.pack();
+
+        editorManager.loadMap(loadMapName);
+    }
+
+    private void init() {
+        frame = JavaMario.getInstance();
         setPreferredSize(new Dimension(DEFAULT_COL * TILE_SIZE, ROW * TILE_SIZE));
-        width = DEFAULT_COL * TILE_SIZE;
+        width = col * TILE_SIZE;
         height = ROW * TILE_SIZE;
 
         editorManager = EditorManager.getInstance();
-        editorManager.init(ROW, col);
 
         // ゲームループ開始
         gameLoop = new Thread(this);
@@ -118,6 +167,10 @@ public class EditorPanel extends JPanel implements Runnable, MouseListener, Mous
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int getCol() {
+        return col;
     }
 
     /**

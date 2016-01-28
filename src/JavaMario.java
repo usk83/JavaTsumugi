@@ -60,14 +60,17 @@ public class JavaMario extends JFrame implements KeyListener {
         pack();
     }
 
-    public void editorStart(int columns) {
+    private void initEditorStart() {
         getContentPane().remove(titlePanel);
 
         JMenu editorMenu = new EditorMenu("メニュー");
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(editorMenu);
         setJMenuBar(menuBar);
+    }
 
+    public void editorStart(int columns) {
+        initEditorStart();
         EditorPanel editorPanel = new EditorPanel(columns);
         scrollPane = new JScrollPane(editorPanel);
 
@@ -81,6 +84,23 @@ public class JavaMario extends JFrame implements KeyListener {
         }
 
         editorPanel.setColumns(columns);
+    }
+
+    public void editorStart(String loadMapName) {
+        initEditorStart();
+        EditorPanel editorPanel = new EditorPanel(loadMapName);
+        scrollPane = new JScrollPane(editorPanel);
+
+        getContentPane().add(scrollPane);
+
+        pack();
+
+        if (editorPanel.getCol() > editorPanel.DEFAULT_COL) {
+            editorPanel.adjustSize();
+            pack();
+        }
+
+        editorPanel.setColumns(editorPanel.getCol());
     }
 
     public void keyTyped(KeyEvent e) {

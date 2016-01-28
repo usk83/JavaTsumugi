@@ -27,7 +27,7 @@ public class MapEditorMenu extends JMenu {
         loadMap.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    initColumns();
+                    loadMap();
                 }
             }
         );
@@ -46,5 +46,20 @@ public class MapEditorMenu extends JMenu {
         columns = dialog.getMapColumns();
 
         frame.editorStart(columns);
+    }
+
+    private void loadMap() {
+        String loadMapName;
+
+        MapLoadDialog dialog = new MapLoadDialog(frame);
+        dialog.setVisible(true);
+
+        if (!dialog.isOKPressed()) {
+            return;
+        }
+
+        loadMapName = dialog.getLoadMapName();
+
+        frame.editorStart(loadMapName);
     }
 }

@@ -2,8 +2,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.*;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +21,7 @@ public class EditorManager {
     private static final EditorManager instance = new EditorManager();
 
     private char[][] map;
+    private float mapGravity;
     private int row;
     private int col;
 
@@ -47,9 +50,39 @@ public class EditorManager {
         }
     }
 
+    public void loadMap(String loadMapName) {
+        BufferedReader loadMap;
+
+        try {
+            File mapFile = new File(new URI(getClass().getClassLoader().getResource("res/map").toString() + "/" + loadMapName + ".dat"));
+            loadMap = new BufferedReader(new FileReader(mapFile));
+        }
+        catch (IOException | URISyntaxException ex) {
+            return;
+        }
+
+        try {
+            mapGravity = Float.parseFloat(loadMap.readLine());
+            loadMap.readLine();
+            loadMap.readLine();
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    map[i][j] = (char)loadMap.read();
+                }
+                loadMap.read(); // 改行文字
+                loadMap.read(); // 改行文字
+            }
+            loadMap.close();
+        }
+        catch (IOException ex) {
+            JOptionPane.showMessageDialog(frame,
+                        "エラー");
+            return;
+        }
+    }
+
     public void saveMap() {
         String fileName;
-        float mapGravity;
         PrintWriter newMap;
 
         SaveDialog dialog = new SaveDialog(frame);
