@@ -21,6 +21,8 @@ public class GameManager {
 
     private Clip bgm;
     private AudioClip goalSound;
+    
+    private boolean isGoal;
 
     HashMap<Integer, Integer> keys;
 
@@ -43,6 +45,8 @@ public class GameManager {
         // マリオを追加
         mario = new Mario(320, 160);
         movableGameObjects.add(mario);
+        //isGoalを初期化
+        isGoal = false;
 
         // BGMの読み込み
         try {
@@ -125,8 +129,9 @@ public class GameManager {
                     gameObjects.remove(coin); // 削除
                     break;
                  }
-                //ゴールだったらゴールになる。
-                else if(go instanceof Goal) {
+                //ゴールかつisGoalがfalseの場合、ゴールになる。
+                else if (go instanceof Goal && !isGoal ) {
+                	isGoal = true;
                 	goalSound.play();
                 	bgm.stop();
                 	break;
@@ -183,6 +188,9 @@ public class GameManager {
      */
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+        if(isGoal){
+        	return;
+        }
         if (keys.get(key) == null) {
             return;
         }
