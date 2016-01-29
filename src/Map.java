@@ -117,7 +117,8 @@ public class Map {
                     return null;
                 }
                 else if (y >= row) {
-                    // TODO: 落ちた時のゲームオーバー処理
+                    //落ちた時のゲームオーバー処理
+                    gameManager.gameOver();
                     // TODO: 穴に落ちたら姿が見えなくなって終了
                     return new Point(x, y);
                 }
