@@ -11,6 +11,9 @@ public abstract class MovableGameObject extends GameObject {
 
     protected GameManager gameManager;
 
+    //こいつがマリオかどうかを判別する。基本的にboolean
+    public boolean isMario;
+
     public MovableGameObject(float _px, float _py, String _path, int _numOfSprites) {
         super(_px, _py, _path, _numOfSprites);
         speed = 0;
@@ -18,6 +21,7 @@ public abstract class MovableGameObject extends GameObject {
         vy = 0;
         onGround = false;
         isForward = true;
+        isMario = false;
         gameManager = GameManager.getInstance();
     }
 

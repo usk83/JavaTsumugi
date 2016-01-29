@@ -22,6 +22,8 @@ public class Mario extends MovableGameObject {
     private boolean isGamecleared; //クリアしたかどうか
     private boolean isGameovered; //死んでるかどうか
 
+    public boolean isMario;//マリオかどうか。オーバーライドしてtrueにする。
+
     public Mario(float _px, float _py) {
         super(_px, _py, "res/mario/mario.png", 14);
 
@@ -34,6 +36,7 @@ public class Mario extends MovableGameObject {
         //クリア,死亡系変数を初期化
         isGamecleared = false;
         isGameovered = false;
+        isMario = true;
     }
 
     public void move() {
