@@ -118,7 +118,7 @@ public class Map {
                 }
                 else if (y >= row) {
                     //落ちた時のゲームオーバー処理
-                    if(mgo.isMario){//マリオだったら。
+                    if(mgo instanceof Mario){//マリオだったら。
                         gameManager.gameOver();
                     }
                     // TODO: 穴に落ちたら姿が見えなくなって終了
