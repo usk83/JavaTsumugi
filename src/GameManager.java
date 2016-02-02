@@ -207,7 +207,7 @@ public class GameManager {
 
     //クリア時に呼び出される関数
     private void gameClear(){
-        if(isGamecleared){
+        if(isGameovered || isGamecleared){
             return;
         }
         System.out.println("Game clear");
@@ -221,7 +221,7 @@ public class GameManager {
 
     //死亡時に呼び出される関数
     public void gameOver(){
-        if(isGameovered){
+        if(isGameovered || isGamecleared){
             return;
         }
         System.out.println("Game Over");
