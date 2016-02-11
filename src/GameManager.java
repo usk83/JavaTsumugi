@@ -11,13 +11,13 @@ import static java.lang.System.exit;
 
 public class GameManager {
 
-    private JavaMario frame;
+    private JavaTsumugi frame;
 
     private static final GameManager instance = new GameManager();
 
     public static double gravity = 1.0;
 
-    private Mario mario;
+    private Tsumugi tsumugi;
     private List<GameObject> gameObjects;
     private List<MovableGameObject> movableGameObjects;
 
@@ -45,7 +45,7 @@ public class GameManager {
         movableGameObjects= new ArrayList<>();
 
         //フレームを持たせる。(ダイアログ用)
-        frame = JavaMario.getInstance();
+        frame = JavaTsumugi.getInstance();
 
         // キーは押していない状態
         keys = new HashMap<Integer, Integer>(3);
@@ -97,8 +97,8 @@ public class GameManager {
         map = new Map("res/map/" + mapFileName);
     }
 
-    public void setMario(Mario m) {
-        mario = m;
+    public void setTsumugi(Tsumugi m) {
+        tsumugi = m;
     }
 
     public void addGameObject(GameObject go) {
@@ -110,7 +110,7 @@ public class GameManager {
     }
 
     public void update() {
-        mario.keyAction(keys);
+        tsumugi.keyAction(keys);
 
         //CheckColisionを前に持ってきた
         checkCollision();
@@ -122,13 +122,13 @@ public class GameManager {
     public void render(Graphics g) {
 
         // X方向のオフセットを計算
-        int offsetX = MainPanel.WIDTH / 2 - (int)mario.getPx();
+        int offsetX = MainPanel.WIDTH / 2 - (int)tsumugi.getPx();
         // マップの端ではスクロールしないようにする
         offsetX = Math.min(offsetX, 0);
         offsetX = Math.max(offsetX, MainPanel.WIDTH - map.getWidth());
 
         // Y方向のオフセットを計算
-        int offsetY = MainPanel.HEIGHT / 2 - (int)mario.getPy();
+        int offsetY = MainPanel.HEIGHT / 2 - (int)tsumugi.getPy();
         // マップの端ではスクロールしないようにする
         offsetY = Math.min(offsetY, 0);
         offsetY = Math.max(offsetY, MainPanel.HEIGHT - map.getHeight());
@@ -150,8 +150,8 @@ public class GameManager {
         Iterator<GameObject> iterator = gameObjects.iterator();
         while (iterator.hasNext()) {
             GameObject go = (GameObject)iterator.next();
-            // マリオと接触してたら
-            if (mario.isCollision(go)) {
+            // つむぎと接触してたら
+            if (tsumugi.isCollision(go)) {
                 // コインだったら削除する
                 if (go instanceof Coin) {
                     Coin coin = (Coin)go;
@@ -169,16 +169,16 @@ public class GameManager {
         Iterator<MovableGameObject> iteratorM = movableGameObjects.iterator();
         while (iteratorM.hasNext()) {
             MovableGameObject go = (MovableGameObject)iteratorM.next();
-            // マリオと接触してたら
-            if (mario.isCollision(go)) {
+            // つむぎと接触してたら
+            if (tsumugi.isCollision(go)) {
                 //クリボだったら死ぬ
                 if (go instanceof Kuribo) {
                     Kuribo kuribo = (Kuribo)go;
                     // 上から踏まれたら
-                    if ((int)mario.getPy() < (int)kuribo.getPy()) {
+                    if ((int)tsumugi.getPy() < (int)kuribo.getPy()) {
                         movableGameObjects.remove(kuribo); // kuribo削除
                         kuribo.playKuriboSound(); //消滅時のサウンド
-                        mario.reflectJump(); //踏むとmarioジャンプ
+                        tsumugi.reflectJump(); //踏むとtsumugiジャンプ
                         break;
                     } else if (!isGameovered){//上以外から接触して且つisGameorveredがfalseなら(二重死亡防止)
                         gameOver();
@@ -200,7 +200,7 @@ public class GameManager {
             }
             else {
                 //頭突きの衝突音
-                mario.playBumpSound();
+                tsumugi.playBumpSound();
             }
         }
     }
@@ -215,8 +215,8 @@ public class GameManager {
         waitTime = GAMECLEAR_TIME;
         goalSound.play();
         bgm.stop();
-        //マリオのアニメーション
-        mario.gameClear();
+        //つむぎのアニメーション
+        tsumugi.gameClear();
     }
 
     //死亡時に呼び出される関数
@@ -229,7 +229,7 @@ public class GameManager {
         waitTime = GAMEOVER_TIME;
         deathSound.play();
         bgm.stop();
-        mario.gameOver();
+        tsumugi.gameOver();
     }
     //ゲームオーバー時、クリア時にwaitTImeが変化してそれぞれのDialogに突入するスレッド
     public class  DialogThread extends Thread {

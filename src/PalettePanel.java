@@ -15,7 +15,7 @@ public class PalettePanel extends JPanel implements MouseListener {
     private int width;
     private int height;
 
-    private Mario mario;
+    private Tsumugi tsumugi;
     private Block block;
     private CoinBlock coinBlock;
     private Coin coin;
@@ -29,7 +29,7 @@ public class PalettePanel extends JPanel implements MouseListener {
         width = COL * TILE_SIZE;
         height = ROW * TILE_SIZE;
 
-        mario = new Mario(0, 0);
+        tsumugi = new Tsumugi(0, 0);
         block = new Block(0, 0);
         coinBlock = new CoinBlock(0, 0);
         coin = new Coin(0, 0);
@@ -52,7 +52,7 @@ public class PalettePanel extends JPanel implements MouseListener {
     public void paintComponent(Graphics g) {
         g.setColor(new Color(32, 0, 0));
         g.fillRect(0, 0, width, height);
-        mario.draw(g, 0 * TILE_SIZE, 0 * TILE_SIZE, 0);
+        tsumugi.draw(g, 0 * TILE_SIZE, 0 * TILE_SIZE, 0);
         block.draw(g, 0 * TILE_SIZE, 1 * TILE_SIZE, 0);
         coinBlock.draw(g, 0 * TILE_SIZE, 2 * TILE_SIZE, 0);
         coin.draw(g, 0 * TILE_SIZE, 3 * TILE_SIZE, 0);
@@ -68,7 +68,7 @@ public class PalettePanel extends JPanel implements MouseListener {
     public char getSelected() {
         switch(selectedNo) {
             case 0:
-                return 'm';
+                return 't';
             case 1:
                 return 'B';
             case 2:

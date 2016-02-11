@@ -5,11 +5,11 @@ import javax.swing.JMenuItem;
 
 public class MapEditorMenu extends JMenu {
 
-    private JavaMario frame;
+    private JavaTsumugi frame;
 
     public MapEditorMenu(String label) {
         super(label);
-        frame = JavaMario.getInstance();
+        frame = JavaTsumugi.getInstance();
 
         JMenuItem newMap = new JMenuItem("新規作成");
         JMenuItem loadMap = new JMenuItem("マップを開く");

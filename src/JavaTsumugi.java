@@ -9,15 +9,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
-public class JavaMario extends JFrame implements KeyListener {
+public class JavaTsumugi extends JFrame implements KeyListener {
 
-    private static final JavaMario instance = new JavaMario();
+    private static final JavaTsumugi instance = new JavaTsumugi();
 
     TitlePanel titlePanel;
     JScrollPane scrollPane;
 
-    private JavaMario() {
-        setTitle("JavaMario");
+    private JavaTsumugi() {
+        setTitle("JavaTsumugi");
     }
 
     public void init() {
@@ -30,7 +30,7 @@ public class JavaMario extends JFrame implements KeyListener {
         setResizable(false);
     }
 
-    public static JavaMario getInstance() {
+    public static JavaTsumugi getInstance() {
         return instance;
     }
 
@@ -130,7 +130,7 @@ public class JavaMario extends JFrame implements KeyListener {
     }
 
     public static void main(String[] args) {
-        JavaMario frame = JavaMario.getInstance();
+        JavaTsumugi frame = JavaTsumugi.getInstance();
         frame.init();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);

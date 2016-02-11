@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class EditorManager {
-    private JavaMario frame;
+    private JavaTsumugi frame;
     private PalettePanel palettePanel;
     private static final EditorManager instance = new EditorManager();
 
@@ -27,7 +27,7 @@ public class EditorManager {
     private int row;
     private int col;
 
-    private Mario mario;
+    private Tsumugi tsumugi;
     private Block block;
     private CoinBlock coinBlock;
     private Coin coin;
@@ -35,11 +35,11 @@ public class EditorManager {
     private Goal goal;
 
     private EditorManager() {
-        frame = JavaMario.getInstance();
+        frame = JavaTsumugi.getInstance();
         palettePanel = PalettePanel.getInstance();
         mapGravity = 0;
         loadedMapName = "";
-        mario = new Mario(0, 0);
+        tsumugi = new Tsumugi(0, 0);
         block = new Block(0, 0);
         coinBlock = new CoinBlock(0, 0);
         coin = new Coin(0, 0);
@@ -106,7 +106,7 @@ public class EditorManager {
 
         int validate = validateMap();
         if (validate == 1) {
-            JOptionPane.showMessageDialog(frame, "マリオの数が不正です");
+            JOptionPane.showMessageDialog(frame, "つむぎの数が不正です");
             return;
         }
         else if (validate == 2) {
@@ -160,8 +160,8 @@ public class EditorManager {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 switch (map[i][j]) {
-                    case 'm':
-                        mario.draw(g, j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, 0);
+                    case 't':
+                        tsumugi.draw(g, j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, 0);
                         break;
                     case 'B':
                         block.draw(g, j * EditorPanel.TILE_SIZE, i * EditorPanel.TILE_SIZE, 0);
@@ -186,12 +186,12 @@ public class EditorManager {
     }
 
     public int validateMap() {
-        int marioCount = 0;
+        int tsumugiCount = 0;
         int goalCount = 0;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if (map[i][j] == 'm') {
-                    marioCount++;
+                if (map[i][j] == 't') {
+                    tsumugiCount++;
                 }
                 else if (map[i][j] == 'G') {
                     goalCount++;
@@ -199,7 +199,7 @@ public class EditorManager {
             }
         }
 
-        if (marioCount != 1) {
+        if (tsumugiCount != 1) {
             return 1;
         }
         else if (goalCount != 1) {

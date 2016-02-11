@@ -11,7 +11,7 @@ import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Mario extends MovableGameObject {
+public class Tsumugi extends MovableGameObject {
     private static final int SPEED = 8;
     private static final int JUMP_SPEED = -18;
 
@@ -22,7 +22,7 @@ public class Mario extends MovableGameObject {
     private boolean isGamecleared; //クリアしたかどうか
     private boolean isGameovered; //死んでるかどうか
 
-    public Mario(float _px, float _py) {
+    public Tsumugi(float _px, float _py) {
         super(_px, _py, "res/img/tsumugi.png", 9);
 
         jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/jump.wav"));
@@ -97,14 +97,14 @@ public class Mario extends MovableGameObject {
     }
 
     public boolean isCollision(GameObject go) {
-        Rectangle marioRect = new Rectangle((int)px, (int)py,
+        Rectangle tsumugiRect = new Rectangle((int)px, (int)py,
                                              width, height);
         Rectangle goRect = new Rectangle((int)go.getPx(),
                                          (int)go.getPy(),
                                               go.getWidth(),
                                               go.getHeight());
-        // マリオの矩形と対象オブジェクトの矩形が重なっているか調べる
-        if (marioRect.intersects(goRect)) {
+        // つむぎの矩形と対象オブジェクトの矩形が重なっているか調べる
+        if (tsumugiRect.intersects(goRect)) {
             return true;
         }
         return false;

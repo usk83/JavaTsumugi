@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class EditorPanel extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private JavaMario frame;
+    private JavaTsumugi frame;
 
     public static final int ROW = 15;
     public static final int DEFAULT_COL = 25;
@@ -73,7 +73,7 @@ public class EditorPanel extends JPanel implements Runnable, MouseListener, Mous
     }
 
     private void init(int adjustOffset) {
-        frame = JavaMario.getInstance();
+        frame = JavaTsumugi.getInstance();
         setPreferredSize(new Dimension(DEFAULT_COL * TILE_SIZE, ROW * TILE_SIZE + adjustOffset));
         width = col * TILE_SIZE;
         height = ROW * TILE_SIZE;

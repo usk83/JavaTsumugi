@@ -25,7 +25,7 @@ public class Map {
      * マップをロードする
      */
     private void loadMap(String mapPath) {
-        int marioCount = 0;
+        int tsumugiCount = 0;
 
         try {
             // ファイルを開く
@@ -56,12 +56,12 @@ public class Map {
                     map[i][j] = line.charAt(j);
                     // マップデータにしたがってオブジェクトの配置
                     switch (map[i][j]) {
-                        case 'm': // マリオ
-                            if (marioCount == 0) {
-                                marioCount++;
-                                Mario mario = new Mario(tilesToPixels(j), tilesToPixels(i));
-                                gameManager.setMario(mario);
-                                gameManager.addMovableGameObject(mario);
+                        case 't': // つむぎ
+                            if (tsumugiCount == 0) {
+                                tsumugiCount++;
+                                Tsumugi tsumugi = new Tsumugi(tilesToPixels(j), tilesToPixels(i));
+                                gameManager.setTsumugi(tsumugi);
+                                gameManager.addMovableGameObject(tsumugi);
                             }
                             break;
                         case 'B': // ブロック
@@ -83,8 +83,8 @@ public class Map {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (marioCount == 0) {
-            System.out.println("マリオがマップに存在しません");
+        if (tsumugiCount == 0) {
+            System.out.println("つむぎがマップに存在しません");
             System.exit(-1);
         }
     }
@@ -118,7 +118,7 @@ public class Map {
                 }
                 else if (y >= row) {
                     //落ちた時のゲームオーバー処理
-                    if(mgo instanceof Mario){//マリオだったら。
+                    if(mgo instanceof Tsumugi){//つむぎだったら。
                         gameManager.gameOver();
                     }
                     // TODO: 穴に落ちたら姿が見えなくなって終了

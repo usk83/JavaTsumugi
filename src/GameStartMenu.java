@@ -9,11 +9,11 @@ import javax.swing.JMenuItem;
 
 public class GameStartMenu extends JMenu {
 
-    private JavaMario frame;
+    private JavaTsumugi frame;
 
     public GameStartMenu(String label) {
         super(label);
-        frame = JavaMario.getInstance();
+        frame = JavaTsumugi.getInstance();
         // マップデータ一覧メニューを作成
         try {
             URI uri = new URI(getClass().getClassLoader().getResource("res/map").toString());
