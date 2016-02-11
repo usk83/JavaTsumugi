@@ -210,7 +210,6 @@ public class GameManager {
         if(isGameovered || isGamecleared){
             return;
         }
-        System.out.println("Game clear");
         //ゲームclear時のwaitTImeを設定
         waitTime = GAMECLEAR_TIME;
         goalSound.play();
@@ -224,7 +223,6 @@ public class GameManager {
         if(isGameovered || isGamecleared){
             return;
         }
-        System.out.println("Game Over");
         //ゲームオーバー時のwaitTImeを設定
         waitTime = GAMEOVER_TIME;
         deathSound.play();
