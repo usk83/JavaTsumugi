@@ -6,10 +6,10 @@ public class Kuribo extends MovableGameObject {
   private AudioClip kuriboSound;
 
   public Kuribo(float _px, float _py) {
-    super(_px, _py, "res/enemy/kuribo.png", 3);
+    super(_px, _py, "res/img/kuribo.png", 3);
     objDire = Direction.LEFT;
     vx = SPEED * objDire;
-    kuriboSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/Squish.wav"));
+    kuriboSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/squish.wav"));
   }
 
   public void playKuriboSound() {

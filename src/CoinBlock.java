@@ -6,9 +6,9 @@ public class CoinBlock extends GameObject {
     private AudioClip coinBlockSound;
 
     public CoinBlock(float _px, float _py) {
-        super(_px, _py, "res/block/CoinBlock.png", 5);
+        super(_px, _py, "res/img/coin_block.png", 5);
         Knocked = false;
-        coinBlockSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/Coin.wav"));
+        coinBlockSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/coin.wav"));
     }
 
     public void playCoinBlockSound() {

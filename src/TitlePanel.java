@@ -14,7 +14,7 @@ public class TitlePanel extends JPanel {
     public TitlePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-        ImageIcon titleImageIcon = new ImageIcon(getClass().getClassLoader().getResource("res/title/title.png"));
+        ImageIcon titleImageIcon = new ImageIcon(getClass().getClassLoader().getResource("res/img/title.png"));
         titleImage = titleImageIcon.getImage();
     }
 

@@ -23,10 +23,10 @@ public class Mario extends MovableGameObject {
     private boolean isGameovered; //死んでるかどうか
 
     public Mario(float _px, float _py) {
-        super(_px, _py, "res/mario/mario.png", 14);
+        super(_px, _py, "res/img/tsumugi.png", 9);
 
-        jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/Jump.wav"));
-        bumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/Bump.wav"));
+        jumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/jump.wav"));
+        bumpSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/effects/bump.wav"));
         iconCount = 1;
         animWait = 50;
         isStop = true;

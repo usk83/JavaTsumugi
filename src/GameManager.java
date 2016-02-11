@@ -74,11 +74,11 @@ public class GameManager {
         try {
             bgm = AudioSystem.getClip();
             //ゴールサウンドを取り込み。
-            goalSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/bgm/06-level-complete.wav"));
+            goalSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/bgm/clear.wav"));
             //ゲームオーバー用のサウンドを取り込み。
-            deathSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/bgm/08-you're-dead.wav"));
+            deathSound = Applet.newAudioClip(getClass().getClassLoader().getResource("res/sound/bgm/gameover.wav"));
 
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("res/sound/bgm/01-main-theme-overworld.wav"));
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("res/sound/bgm/main.wav"));
             bgm.open(inputStream);
             bgm.loop(Clip.LOOP_CONTINUOUSLY);
         }
@@ -254,7 +254,7 @@ public class GameManager {
                     this.sleep(waitTime);
                 }
                 catch (InterruptedException e){
-                    System.out.println(" dialogThread err!");
+                    System.out.println("dialogThread err!");
                 }
             }
         }
